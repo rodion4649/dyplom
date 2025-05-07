@@ -55,7 +55,7 @@ export default (({ onSubmit }: { onSubmit: (newQuestion:Question) => void }) => 
                     if (validateFields())
                     {
                         const newQuestion = {
-                            questionType: "openEnded",
+                            questionType: "openEnded" as "multipleChoice" | "openEnded",
                             points: Number(pointsString),
                             questionText: questionText,
                             answerText: answerText,

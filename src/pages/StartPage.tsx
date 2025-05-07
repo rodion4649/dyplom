@@ -1,16 +1,20 @@
 import { useEffect, useState } from "react";
 import SidebarNav from "../components/SidebarNav"
 import { getGeneralData } from "../services/ExamService";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default () => {
     const [title, setTitle] = useState<string>("");
     const [description, setDescription] = useState<string>("");
     const [errors, setErrors] = useState<{ title?: string }>({});
     const navigate = useNavigate();
+    const location = useLocation();
 
     useEffect(() => {
-        getGeneralData("examId").then(({ title: _title, description: _description }) => {
+        const queryParams = new URLSearchParams(location.search);
+        const examId = queryParams.get("examId")
+
+        getGeneralData(examId || "").then(({ title: _title, description: _description }) => {
             setTitle(_title);
             setDescription(_description);
         }).catch((error) => {

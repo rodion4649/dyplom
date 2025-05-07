@@ -1,10 +1,22 @@
+export interface Exam {
+    id:string,
+    generalData: GeneralData,
+    questions: Question[],
+    results: Result[],
+    settings: Settings,
+}
+
+export interface GeneralData {
+    title: string,
+    description: string,
+}
+
 export interface Question {
     questionType: "openEnded" | "multipleChoice",
     points: number,
     questionText: string,
     answerText?: string,
     answers?: { isCorrect: boolean, answerText: string }[],
-    // correctAnswers?: number[]
 }
 
 export interface Result {

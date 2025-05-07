@@ -53,7 +53,7 @@ export default () => {
                                 login({ email, password }).then((response) => {
                                     if (response?.data?.token && response.status === 200) {
                                         localStorage.setItem("token", response.data.token);
-                                        navigate("/start");
+                                        navigate("/exams");
                                     } else {
                                         console.error("Статус", response.status);
                                         console.error("Токен", response?.data?.token);

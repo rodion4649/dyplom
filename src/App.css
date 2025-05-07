@@ -8,7 +8,10 @@
 .page-container {
     padding: 35px;
     padding-left: 350px;
-    height: 150vh;
+}
+
+.full-page-container {
+    padding: 35px;
 }
 
 .login-form-container {
@@ -264,4 +267,9 @@
     flex-direction: column;
     width: 700px;
     padding: 20px;
+}
+
+.exam-description {
+    max-width: 700px;
+    overflow: hidden;
 }

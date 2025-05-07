@@ -9,11 +9,13 @@ import TestStartPage from './pages/TestStartPage';
 import TestQuestionPage from './pages/TestQuestionPage';
 import TestResultPage from './pages/TestResultPage';
 import ResultsPage from './pages/ResultsPage';
+import ExamsPage from './pages/ExamsPage';
 
 function App() {
   return (
     <Router>
       <Routes>
+        <Route path="/exams" element={<ExamsPage />} />
         <Route path="/start" element={<StartPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
