@@ -19,11 +19,8 @@ export const signup = ({ email, password }: { email: string, password: string })
     if (!response.ok) {
         throw new Error("Login failed");
     }
-    console.log("bbb");
-
 
     return response.json();
-
 }
 
 export const login = ({ email, password }: { email: string, password: string }) => {
@@ -58,8 +55,6 @@ export const login = ({ email, password }: { email: string, password: string }) 
     if (!response.ok) {
         throw new Error("Login failed");
     }
-    console.log("bbb");
-
 
     return response.json();
 
