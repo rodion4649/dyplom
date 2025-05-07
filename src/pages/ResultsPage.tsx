@@ -9,7 +9,9 @@ export default () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        getResults("examId").then((_results: Result[]) => {
+        const examId = localStorage.getItem("examId");
+
+        getResults(examId ?? "").then((_results: Result[]) => {
             setResults(_results);
         }).catch((error) => {
             console.error("Error fetching questions:", error);
@@ -25,9 +27,7 @@ export default () => {
             <SidebarNav />
             <div className="page-container">
                 <h1 className="page-title">Результати</h1>
-                {/* це список питань */}
                 <div className="table" >
-                    {/* це рядок з заголовками */}
                     <div className="table-row-header" >
                         <div className="table-cell w-[20px]">
                             #
@@ -76,7 +76,7 @@ export default () => {
                     ).join("\n");
                     const file = new Blob([csvContent], { type: 'text/plain' });
                     element.href = URL.createObjectURL(file);
-                    element.download = "Питання";
+                    element.download = "Результати";
                     document.body.appendChild(element);
                     element.click();
                 }}>

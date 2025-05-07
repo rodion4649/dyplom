@@ -144,7 +144,7 @@
     border-radius: 4px;
     font-size: 18px;
     background: #163f39;
-    color: #232f33;
+    color: #f1fff9;
 }
 
 .login-form-button {
@@ -165,7 +165,7 @@
     background: none;
     border-bottom: 1px solid #245c54;
     font-size: 18px;
-    color: #232f33;
+    color: #fff;
 }
 
 .text-area {
@@ -249,13 +249,12 @@
     gap: 16px;
     width: 700px;
     padding: 20px;
-    background-color: #245c54;
+    background-color: #309b8b;
     border-radius: 20px;
 }
 
 .test-title {
     font-size: 36px;
-    color: #232f33;
 }
 
 .error-text {
@@ -269,7 +268,20 @@
     padding: 20px;
 }
 
+.no-overflow {
+    overflow: hidden;
+}
+
 .exam-description {
     max-width: 700px;
     overflow: hidden;
+}
+
+.color-dark {
+    color: #232f33;
+}
+
+.test-results-description {
+    font-size: 20px;
+    color: #232f33;
 }

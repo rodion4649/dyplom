@@ -11,10 +11,11 @@ export default () => {
     const [examsList, setExamsList] = useState<Exam[]>([]);
 
     const navigate = useNavigate();
-    
-    useEffect(() => {
 
-        getExamsList().then((exams: Exam[]) => {
+    useEffect(() => {
+        const userId = localStorage.getItem("userId");
+
+        getExamsList(userId ?? "").then((exams: Exam[]) => {
             setExamsList(exams);
         }).catch((error) => {
             console.error("Помилка отримання екзаменів:", error);
@@ -49,8 +50,8 @@ export default () => {
 
                         {examsList.map((exam, index) => {
                             return (
-                                <Link to={`/start?examId=${exam.id}`}>
-                                    <div className="table-row">
+                                <div className="table-row">
+                                    <Link to={`/start?examId=${exam.id}`}>
                                         <div className="flex ml-[8px]">
                                             <div className="table-cell w-[20px]">
                                                 {index + 1}
@@ -58,22 +59,21 @@ export default () => {
                                             <div className="table-cell w-[200px]">
                                                 {exam.generalData.title}
                                             </div>
-                                            <div className="table-cell exam-description">
+                                            <div className="table-cell no-overflow">
                                                 {exam.generalData.description}
                                             </div>
                                         </div>
-                                        <div className="flex mr-[8px]">
-
-                                            <div className="table-cell w-[24px]">
-                                                <button onClick={() => {
-                                                    setExamsList(examsList.filter((e) => e !== exam));
-                                                }}>
-                                                    <DeleteIcon />
-                                                </button>
-                                            </div>
+                                    </Link>
+                                    <div className="flex mr-[8px]">
+                                        <div className="table-cell w-[24px]">
+                                            <button onClick={() => {
+                                                setExamsList(examsList.filter((e) => e !== exam));
+                                            }}>
+                                                <DeleteIcon />
+                                            </button>
                                         </div>
                                     </div>
-                                </Link>
+                                </div>
 
                             )
                         })}

@@ -50,17 +50,8 @@ export default () => {
                             event.preventDefault();
 
                             if (validateFields()) {
-                                login({ email, password }).then((response) => {
-                                    if (response?.data?.token && response.status === 200) {
-                                        localStorage.setItem("token", response.data.token);
-                                        navigate("/exams");
-                                    } else {
-                                        console.error("Статус", response.status);
-                                        console.error("Токен", response?.data?.token);
-                                        setErrors({ email: "Невірна пошта або пароль" });
-
-                                        setErrors({ email: "Сталася помилка" });
-                                    }
+                                login({ email, password }).then(() => {
+                                    navigate("/exams");
                                 }).catch((error) => {
                                     console.error("Login failed", error);
                                     setErrors({ email: "Невірна пошта або пароль" });

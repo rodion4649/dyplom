@@ -13,6 +13,7 @@ export default () => {
     useEffect(() => {
         const queryParams = new URLSearchParams(location.search);
         const examId = queryParams.get("examId")
+        localStorage.setItem("examId", examId || "")
 
         getGeneralData(examId || "").then(({ title: _title, description: _description }) => {
             setTitle(_title);
@@ -24,7 +25,7 @@ export default () => {
                 navigate("/login");
             }
         })
-    }, []);
+    }, [navigate, location.search ]);
 
     return (
         <>
@@ -32,7 +33,7 @@ export default () => {
             <div className="page-container">
                 <h1 className="page-title">Головна</h1>
                 <p className="field-title">Назва</p>
-                <input className="text-input" placeholder="Назва тесту"
+                <input className="text-input color-dark" placeholder="Назва тесту"
                     value={title} onChange={(event) => {
                         setTitle(event.target.value)
                     }} />

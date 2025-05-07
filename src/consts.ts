@@ -1,0 +1,1 @@
+export const urlBase = "https://api.example.com/exams";

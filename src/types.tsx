@@ -1,5 +1,5 @@
 export interface Exam {
-    id:string,
+    id: string,
     generalData: GeneralData,
     questions: Question[],
     results: Result[],
@@ -11,12 +11,19 @@ export interface GeneralData {
     description: string,
 }
 
+export type QuestionType = "text" | "multipleChoice" | "singleChoice";
+
+export interface SelectableAnswer {
+    isCorrect: boolean,
+    answerText: string
+}
+
 export interface Question {
-    questionType: "openEnded" | "multipleChoice",
+    questionType: QuestionType,
     points: number,
     questionText: string,
     answerText?: string,
-    answers?: { isCorrect: boolean, answerText: string }[],
+    answers?: SelectableAnswer[],
 }
 
 export interface Result {
@@ -33,4 +40,22 @@ export interface Settings {
     isTimeLimitPresent?: boolean,
     questionsOrder?: "inOrder" | "random",
     timeLimit?: number,
+}
+
+export interface TestSession {
+    id: string,
+    userName: string,
+    examId: string,
+    startTime: number,
+    timeLimit?: number,
+    isCompeted: boolean,
+    // це тільки ті питання, що залишилися
+    questions: Question[],
+    totalQuestionsNumber: number,
+}
+
+export interface TestResults {
+    points: number,
+    maxPoints: number,
+    timeTaken: number,
 }

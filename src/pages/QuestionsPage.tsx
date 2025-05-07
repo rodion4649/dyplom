@@ -3,7 +3,7 @@ import Modal from "../components/Modal"
 import EditIcon from "../assets/icons/EditIcon.tsx";
 import DeleteIcon from "../assets/icons/DeleteIcon.tsx";
 import CreateQuestionForm from "../components/CreateQuestionForm.tsx";
-import { Question } from "../types.tsx";
+import { Question, QuestionType } from "../types.tsx";
 import { getQuestions } from "../services/ExamService.tsx";
 import SidebarNav from "../components/SidebarNav.tsx";
 import { useNavigate } from "react-router-dom";
@@ -20,7 +20,8 @@ export default () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        getQuestions("examId").then((questions: Question[]) => {
+        const examId = localStorage.getItem("examId");
+        getQuestions(examId ?? "").then((questions: Question[]) => {
             setQuestionsList(questions);
         }).catch((error) => {
             console.error("Error fetching questions:", error);
@@ -66,14 +67,16 @@ export default () => {
                                         const rows = text.split("\n").map(row => row.split(","));
                                         console.log(rows);
                                         const parsedQuestions = rows.map(([questionType, points, questionText]) => ({
-                                            questionType: questionType.trim() as "openEnded" | "multipleChoice",
+                                            questionType: questionType.trim() as QuestionType,
                                             points: parseInt(points.trim(), 10),
                                             questionText: questionText.trim(),
                                         }));
                                         console.log(parsedQuestions);
 
                                         const isValid = parsedQuestions.every(q =>
-                                            (q.questionType === "openEnded" || q.questionType === "multipleChoice") &&
+                                            (q.questionType === "text" ||
+                                                q.questionType === "multipleChoice" ||
+                                                q.questionType === "singleChoice") &&
                                             !isNaN(q.points) &&
                                             q.questionText
                                         );
@@ -138,7 +141,18 @@ export default () => {
                                         {index + 1}
                                     </div>
                                     <div className="table-cell w-[200px]">
-                                        {question.questionType === "openEnded" ? "Відкрите питання" : "Питання з вибором"}
+                                        {(() => {
+                                            switch (question.questionType) {
+                                                case "multipleChoice":
+                                                    return "Вибір з декількох варіантів";
+                                                case "singleChoice":
+                                                    return "Вибір з одного варіанта";
+                                                case "text":
+                                                    return "Відкрите питання";
+                                                default:
+                                                    return "";
+                                            }
+                                        })()}
                                     </div>
                                     <div className="table-cell">
                                         {question.questionText}

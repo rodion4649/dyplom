@@ -9,7 +9,7 @@ export default ({ onSubmit }: { onSubmit: (newQuestion:Question) => void }) => {
     return (
         <div className="add-new-question-form">
             <p className="field-title">Тип питання</p>
-            <select className="text-input" value={questionType}
+            <select className="text-input color-dark" value={questionType}
                 onChange={(e) => {
                     setQuestionType(e.target.value);
                 }}>

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { createQuestion } from "../services/ExamService";
-import { Question } from "../types";
+import { Question, QuestionType } from "../types";
 
 export default (({ onSubmit }: { onSubmit: (newQuestion:Question) => void }) => {
     const [questionText, setQuestionText] = useState("");
@@ -35,7 +35,7 @@ export default (({ onSubmit }: { onSubmit: (newQuestion:Question) => void }) => 
         <>
             <div className="answer-second-row">
                 <p>Кількість очок</p>
-                <input className="text-input" value={pointsString}
+                <input className="text-input color-dark" value={pointsString}
                     onChange={(e) => { setPointsString(e.target.value) }}
                 />
                 {errors.pointsError &&
@@ -54,8 +54,10 @@ export default (({ onSubmit }: { onSubmit: (newQuestion:Question) => void }) => 
                 onClick={async () => {
                     if (validateFields())
                     {
+                        const examId = localStorage.getItem("examId");
                         const newQuestion = {
-                            questionType: "openEnded" as "multipleChoice" | "openEnded",
+                            examId: examId ?? "",
+                            questionType: "openEnded" as QuestionType,
                             points: Number(pointsString),
                             questionText: questionText,
                             answerText: answerText,

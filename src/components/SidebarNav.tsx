@@ -16,6 +16,9 @@ export default () => {
                 <div className="sidebar-nav-item">
                     <Link to="/settings" className="sidebar-nav-link">Налаштування</Link>
                 </div>
+                <div className="sidebar-nav-item">
+                    <Link to="/getLink" className="sidebar-nav-link">Посилання</Link>
+                </div>
             </div>
             <div>
                 <button className="sidebar-nav-item" onClick={()=>{

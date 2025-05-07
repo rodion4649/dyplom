@@ -10,6 +10,7 @@ import TestQuestionPage from './pages/TestQuestionPage';
 import TestResultPage from './pages/TestResultPage';
 import ResultsPage from './pages/ResultsPage';
 import ExamsPage from './pages/ExamsPage';
+import GetLinkPage from './pages/GetLinkPage';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <Route path="/test/question" element={<TestQuestionPage />} />
         <Route path="/test/result" element={<TestResultPage />} />
         <Route path="/results" element={<ResultsPage />} />
+        <Route path="/getLink" element={<GetLinkPage />} />
       </Routes>
     </Router>
   );

@@ -19,8 +19,8 @@ export default () => {
                     if (title.length === 0) {
                         alert("Введіть назву контрольної");
                     } else {
-                        const newExamId = await createExam(title);
-                        navigate(`/start?id=${newExamId}`);
+                        const newExam = await createExam(title);
+                        navigate(`/start?id=${newExam.id}`);
                     }
                 }}>
                     Створити
