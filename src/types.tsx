@@ -6,7 +6,7 @@ export interface Exam {
     settings: Settings,
 }
 
-export type QuestionType = "TEXT" | "MULTIPLE_CHOISE" | "SINGLE_CHOISE";
+export type QuestionType = "TEXT" | "MULTIPLE_CHOICE" | "SINGLE_CHOICE";
 
 export interface SelectableAnswer {
     isCorrect: boolean,

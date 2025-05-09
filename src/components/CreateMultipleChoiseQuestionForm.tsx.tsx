@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { createQuestion } from "../services/ExamService.tsx";
 import DeleteIcon from "../assets/icons/DeleteIcon.tsx";
-import { Question, QuestionType } from "../types.tsx";
+import { Question } from "../types.tsx";
 
 export default ({ onSubmit }: { onSubmit: (newQuestion: Question) => void }) => {
     const [pointsString, setPointsString] = useState("5");
@@ -106,8 +106,8 @@ export default ({ onSubmit }: { onSubmit: (newQuestion: Question) => void }) => 
                 onClick={async () => {
                     if (validateFields()) {
                         const examId = localStorage.getItem("examId");
-                        const newQuestion = {
-                            questionType: "openEnded" as QuestionType,
+                        const newQuestion: Question = {
+                            questionType: "MULTIPLE_CHOICE",
                             points: Number(pointsString),
                             questionText,
                             answers

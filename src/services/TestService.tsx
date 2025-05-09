@@ -42,7 +42,7 @@ export const getSession = async (): Promise<TestSession> => {
                     answerText: "1",
                 },
                 {
-                    questionType: "MULTIPLE_CHOISE",
+                    questionType: "MULTIPLE_CHOICE",
                     points: 15,
                     questionText: "2?",
                     answers: [
@@ -53,7 +53,7 @@ export const getSession = async (): Promise<TestSession> => {
                     ]
                 },
                 {
-                    questionType: "SINGLE_CHOISE",
+                    questionType: "SINGLE_CHOICE",
                     points: 15,
                     questionText: "3?",
                     answers: [

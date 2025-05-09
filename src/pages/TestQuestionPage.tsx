@@ -76,10 +76,10 @@ export default () => {
                         <p>{questionsNumber - questions?.length + 1} з {questionsNumber}</p>
                     }
                     <h1 className="test-title">{questions?.[0].questionText}</h1>
-                    {questions?.[0].questionType === "SINGLE_CHOISE" && questions?.[0].answers &&
+                    {questions?.[0].questionType === "SINGLE_CHOICE" && questions?.[0].answers &&
                         <SingleChoiseAnswer answers={questions?.[0].answers} onSubmit={onSubmit} />
                     }
-                    {questions?.[0].questionType === "MULTIPLE_CHOISE" && questions?.[0].answers &&
+                    {questions?.[0].questionType === "MULTIPLE_CHOICE" && questions?.[0].answers &&
                         <MultipleChoiseAnswer answers={questions?.[0].answers} onSubmit={onSubmit} />
                     }
                     {questions?.[0].questionType === "TEXT" &&

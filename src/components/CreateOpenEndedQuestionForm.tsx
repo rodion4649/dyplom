@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { createQuestion } from "../services/ExamService";
-import { Question, QuestionType } from "../types";
+import { Question } from "../types";
 
 export default (({ onSubmit }: { onSubmit: (newQuestion: Question) => void }) => {
     const [questionText, setQuestionText] = useState("");
@@ -54,8 +54,8 @@ export default (({ onSubmit }: { onSubmit: (newQuestion: Question) => void }) =>
                 onClick={async () => {
                     if (validateFields()) {
                         const examId = localStorage.getItem("examId");
-                        const newQuestion = {
-                            questionType: "openEnded" as QuestionType,
+                        const newQuestion: Question = {
+                            questionType: "TEXT",
                             points: Number(pointsString),
                             questionText: questionText,
                             answerText: answerText,

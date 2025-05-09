@@ -75,8 +75,8 @@ export default () => {
 
                                         const isValid = parsedQuestions.every(q =>
                                             (q.questionType === "TEXT" ||
-                                                q.questionType === "MULTIPLE_CHOISE" ||
-                                                q.questionType === "SINGLE_CHOISE") &&
+                                                q.questionType === "MULTIPLE_CHOICE" ||
+                                                q.questionType === "SINGLE_CHOICE") &&
                                             !isNaN(q.points) &&
                                             q.questionText
                                         );
@@ -143,9 +143,9 @@ export default () => {
                                     <div className="table-cell w-[200px]">
                                         {(() => {
                                             switch (question.questionType) {
-                                                case "MULTIPLE_CHOISE":
+                                                case "MULTIPLE_CHOICE":
                                                     return "Вибір з декількох варіантів";
-                                                case "SINGLE_CHOISE":
+                                                case "SINGLE_CHOICE":
                                                     return "Вибір з одного варіанта";
                                                 case "TEXT":
                                                     return "Відкрите питання";

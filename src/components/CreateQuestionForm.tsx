@@ -5,7 +5,7 @@ import { Question, QuestionType } from "../types.tsx";
 import CreateSingleChoiseQuestionForm from "./CreateSingleChoiseQuestionForm.tsx";
 
 export default ({ onSubmit }: { onSubmit: (newQuestion:Question) => void }) => {
-    const [questionType, setQuestionType] = useState<QuestionType>("MULTIPLE_CHOISE");
+    const [questionType, setQuestionType] = useState<QuestionType>("MULTIPLE_CHOICE");
 
     return (
         <div className="add-new-question-form">
@@ -23,11 +23,11 @@ export default ({ onSubmit }: { onSubmit: (newQuestion:Question) => void }) => {
                 <CreateOpenEndedQuestionForm onSubmit={onSubmit}/>
             }
 
-            {questionType === "MULTIPLE_CHOISE" &&
+            {questionType === "MULTIPLE_CHOICE" &&
                 <CreateMultipleChoiseQuestionForm onSubmit={onSubmit}/>
             }
 
-            {questionType === "SINGLE_CHOISE" &&
+            {questionType === "SINGLE_CHOICE" &&
                 <CreateSingleChoiseQuestionForm onSubmit={onSubmit}/>
             }
 
