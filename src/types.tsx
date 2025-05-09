@@ -14,6 +14,7 @@ export interface SelectableAnswer {
 }
 
 export interface Question {
+    quesId:number
     questionType: QuestionType,
     points: number,
     questionText: string,

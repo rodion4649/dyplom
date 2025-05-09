@@ -79,7 +79,14 @@ export const createQuestion = async (
         }),
     });
 
-
+    console.log(JSON.stringify({
+            examId,
+            questionType,
+            points,
+            questionText,
+            answerText,
+            answers,
+        }))
     if (!response.ok) {
         throw new Error("Помилка створення питання");
     }
@@ -89,8 +96,36 @@ export const createQuestion = async (
     return json;
 }
 
+export const deleteExam = async (examId: string): Promise<void> => {
+    const response = await fetch(`${urlBase}/quiz/${examId}`, {
+        method: "DELETE",
+        headers: {
+            "Authorization": `Bearer ${localStorage.getItem("token")}`,
+        },
+    });
+
+    if (!response.ok) {
+        throw new Error("Помилка видалення екзамену");
+    }
+};
+
+
+export const deleteQuestion = async (qid: number): Promise<void> => {
+  const response = await fetch(`${urlBase}/question/${qid}`, {
+    method: "DELETE",
+    headers: {
+      "Authorization": `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to delete question with id ${qid}`);
+  }
+};
+
+
 export const getQuestions = async (examId: string): Promise<Question[]> => {
-    const response = await fetch(`${urlBase}/getQuestions?examId=${examId}`, {
+    const response = await fetch(`${urlBase}/question?examId=${examId}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -108,7 +143,7 @@ export const getQuestions = async (examId: string): Promise<Question[]> => {
 };
 
 export const getResults = async (examId: string): Promise<Result[]> => {
-    const response = await fetch(`${urlBase}/getResults?examId=${examId}`, {
+    const response = await fetch(`${urlBase}/quiz/${examId}/results`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",

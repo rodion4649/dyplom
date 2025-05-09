@@ -2,71 +2,82 @@ import { useState } from "react";
 import { createQuestion } from "../services/ExamService";
 import { Question } from "../types";
 
-export default (({ onSubmit }: { onSubmit: (newQuestion: Question) => void }) => {
+export default ({ onSubmit }: { onSubmit: (newQuestion: Question) => void }) => {
     const [questionText, setQuestionText] = useState("");
     const [answerText, setAnswerText] = useState("");
     const [pointsString, setPointsString] = useState("5");
 
     const [errors, setErrors] = useState<{
-        pointsError?: string; questionError?: string; answerError?: string
+        pointsError?: string;
+        questionError?: string;
+        answerError?: string;
     }>({});
 
     const validateFields = () => {
-        const newErrors: {
-            pointsError?: string; questionError?: string; answerError?: string
-        } = {}
+        const newErrors: typeof errors = {};
 
         if (!pointsString.trim() || isNaN(Number(pointsString))) {
             newErrors.pointsError = "Введіть вірне число";
         }
-        if (!questionText.length) {
+
+        if (!questionText.trim()) {
             newErrors.questionError = "Введіть питання";
         }
-        if (!answerText.length) {
+
+        if (!answerText.trim()) {
             newErrors.answerError = "Введіть відповідь";
         }
 
         setErrors(newErrors);
-
         return Object.keys(newErrors).length === 0;
-    }
+    };
+
+    const handleSubmit = async () => {
+        if (!validateFields()) return;
+
+        const examId = localStorage.getItem("examId");
+        const newQuestion: Question = {
+            questionType: "TEXT",
+            points: Number(pointsString),
+            questionText,
+            answerText,
+        };
+
+        await createQuestion(examId ?? "", newQuestion);
+        onSubmit(newQuestion);
+    };
 
     return (
         <>
             <div className="answer-second-row">
                 <p>Кількість очок</p>
-                <input className="text-input color-dark" value={pointsString}
-                    onChange={(e) => { setPointsString(e.target.value) }}
+                <input
+                    className="text-input color-dark"
+                    value={pointsString}
+                    onChange={(e) => setPointsString(e.target.value)}
                 />
-                {errors.pointsError &&
-                    <p className="error-text">Введіть вірне число</p>}
+                {errors.pointsError && <p className="error-text">{errors.pointsError}</p>}
             </div>
+
             <p className="field-title">Питання</p>
-            <textarea value={questionText} onChange={(e) => { setQuestionText(e.target.value) }} className="text-area create-question-text-area" />
-            {errors?.questionError &&
-                <p className="error-text">{errors.questionError}</p>}
+            <textarea
+                className="text-area create-question-text-area"
+                value={questionText}
+                onChange={(e) => setQuestionText(e.target.value)}
+            />
+            {errors.questionError && <p className="error-text">{errors.questionError}</p>}
+
             <p className="field-title">Відповідь</p>
-            <textarea value={answerText} onChange={(e) => { setAnswerText(e.target.value) }}
-                className="text-area create-question-text-area" />
-            {errors?.answerError &&
-                <p className="error-text">{errors.answerError}</p>}
-            <button className="button full-width"
-                onClick={async () => {
-                    if (validateFields()) {
-                        const examId = localStorage.getItem("examId");
-                        const newQuestion: Question = {
-                            questionType: "TEXT",
-                            points: Number(pointsString),
-                            questionText: questionText,
-                            answerText: answerText,
-                        };
-                        createQuestion(examId ?? "", newQuestion).then(() => {
-                            onSubmit(newQuestion);
-                        })
-                    }
-                }}>
+            <textarea
+                className="text-area create-question-text-area"
+                value={answerText}
+                onChange={(e) => setAnswerText(e.target.value)}
+            />
+            {errors.answerError && <p className="error-text">{errors.answerError}</p>}
+
+            <button className="button full-width" onClick={handleSubmit}>
                 Додати питання
             </button>
         </>
-    )
-})
+    );
+};
