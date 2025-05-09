@@ -1,5 +1,5 @@
 import './App.css';
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import StartPage from './pages/StartPage';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
@@ -16,6 +16,7 @@ function App() {
   return (
     <Router>
       <Routes>
+        <Route path="/" element={localStorage.getItem("token") ? <Navigate to={"/exams"} /> : <Navigate to={"/login"} />} />
         <Route path="/exams" element={<ExamsPage />} />
         <Route path="/start" element={<StartPage />} />
         <Route path="/login" element={<LoginPage />} />
