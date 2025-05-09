@@ -45,7 +45,7 @@ export default ({ onSubmit }: { onSubmit: (newQuestion: Question) => void }) => 
                 <input className="text-input color-dark" value={pointsString}
                     onChange={(e) => { setPointsString(e.target.value) }}
                 />
-                {isNaN(Number(pointsString)) &&
+                {errors.pointsError &&
                     <p className="error-text">Введіть вірне число</p>}
             </div>
             <p className="field-title">Питання</p>
