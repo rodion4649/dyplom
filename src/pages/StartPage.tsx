@@ -14,9 +14,9 @@ export default () => {
         const queryParams = new URLSearchParams(location.search);
         const examId = queryParams.get("examId");
         if (examId)
-            localStorage.setItem("examId", examId || "");
+            localStorage.setItem("examId", examId ?? "");
 
-        getExamData(examId || "").then(({ title: _title, description: _description }) => {
+        getExamData(localStorage.getItem("examId") ?? "").then(({ title: _title, description: _description }) => {
             setTitle(_title);
             setDescription(_description);
         }).catch((error) => {
