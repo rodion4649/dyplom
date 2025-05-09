@@ -5,6 +5,9 @@ export default () => {
         <div className="sidebar-nav">
             <div className="sidebar-nav-header">
                 <div className="sidebar-nav-item">
+                    <Link to="/exams" className="sidebar-nav-link">Усі контрольні</Link>
+                </div>
+                <div className="sidebar-nav-item">
                     <Link to="/start" className="sidebar-nav-link">Головна</Link>
                 </div>
                 <div className="sidebar-nav-item">
@@ -21,7 +24,7 @@ export default () => {
                 </div>
             </div>
             <div>
-                <button className="sidebar-nav-item" onClick={()=>{
+                <button className="sidebar-nav-item" onClick={() => {
                     console.log("Logout");
                     localStorage.removeItem("token");
                 }}>

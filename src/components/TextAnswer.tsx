@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { SelectableAnswer } from "../types";
 
 export default ({ onSubmit }: { onSubmit: (answer: string) => void }) => {
 

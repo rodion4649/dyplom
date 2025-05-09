@@ -6,15 +6,14 @@ import { useNavigate } from "react-router-dom";
 
 export default () => {
     const [settings, setSettings] = useState<Settings>({
-        showExplanation: undefined,
-        isTimeLimitPresent: undefined,
         questionsOrder: undefined,
         timeLimit: 10,
     });
     const navigate = useNavigate();
 
+    const examId = localStorage.getItem("examId");
     useEffect(() => {
-        getSettings("examId").then((_settings: Settings) => {
+        getSettings(examId ?? "").then((_settings: Settings) => {
             setSettings(_settings);
         }).catch((error) => {
             console.error("Error fetching questions:", error);
@@ -24,66 +23,14 @@ export default () => {
             }
         })
     }, []);
+
     return (
         <>
             <SidebarNav />
             <div className="page-container">
                 <h1 className="page-title">Налаштування</h1>
-                <p className="field-title">Показувати поясення після відповіді</p>
-                <div>
-                    <label>
-                        <div>
-                            <input type="radio" name="showExplanation" value="yes" checked={settings.showExplanation === true}
-                                onChange={() => {
-                                    setSettings((prevSettings) => ({
-                                        ...prevSettings,
-                                        showExplanation: !prevSettings.showExplanation
-                                    }));
-                                }} />
-                            <span className="radio-title">Так</span>
-                        </div>
-                    </label>
-                    <label>
-                        <div>
-                            <input type="radio" name="showExplanation" value="no" checked={settings.showExplanation === false}
-                                onChange={() => {
-                                    setSettings((prevSettings) => ({
-                                        ...prevSettings,
-                                        showExplanation: !prevSettings.showExplanation
-                                    }));
-                                }} />
-                            <span className="radio-title">Ні</span>
-                        </div>
-                    </label>
-                </div>
                 <p className="field-title">Обмеження по часу</p>
-                <div>
-                    <label>
-                        <div>
-                            <input type="radio" name="isTimeLImitPresent" value="yes" checked={settings.isTimeLimitPresent === true}
-                                onChange={() => {
-                                    setSettings((prevSettings) => ({
-                                        ...prevSettings,
-                                        isTimeLimitPresent: !prevSettings.isTimeLimitPresent
-                                    }));
-                                }} />
-                            <span className="radio-title">Присутнє</span>
-                        </div>
-                    </label>
-                    <label>
-                        <div>
-                            <input type="radio" name="isTimeLImitPresent" value="no" checked={settings.isTimeLimitPresent === false}
-                                onChange={() => {
-                                    setSettings((prevSettings) => ({
-                                        ...prevSettings,
-                                        isTimeLimitPresent: !prevSettings.isTimeLimitPresent
-                                    }));
-                                }} />
-                            <span className="radio-title">Відсутнє</span>
-                        </div>
-                    </label>
-                </div>
-                {settings.isTimeLimitPresent && <input type="number" className="text-input" placeholder="Обмеження в хвилинах" value={settings.timeLimit}
+                { <input type="number" className="text-input color-dark" placeholder="Обмеження в хвилинах" value={settings.timeLimit}
                     onChange={(e) => {
                         setSettings((prevSettings) => ({
                             ...prevSettings,
@@ -119,7 +66,7 @@ export default () => {
                     </label>
                 </div>
                 <button className="button" type="submit" onClick={() => {
-                    updateSettings(settings);
+                    updateSettings(examId ?? "", settings);
                 }}>
                     Зберегти
                 </button>

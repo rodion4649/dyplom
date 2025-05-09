@@ -62,11 +62,13 @@ export default ({ onSubmit }: { onSubmit: (newQuestion: Question) => void }) => 
                             </div>
                             <div>
                                 <span>Правильна відповідь</span>
-                                <input type="checkbox" className="correct-answer-checkbox" checked={answer.isCorrect}
-                                    onChange={(e) => {
+                                <input type="radio" className="correct-answer-checkbox" checked={answer.isCorrect}
+                                    onChange={() => {
                                         setAnswers(() => {
                                             const newAnswers = [...answers];
-                                            newAnswers[index].isCorrect = e.target.checked;
+                                            newAnswers.forEach((_answer) => { _answer.isCorrect = false })
+                                            newAnswers[index].isCorrect = true;
+
                                             return newAnswers;
                                         })
                                     }} />

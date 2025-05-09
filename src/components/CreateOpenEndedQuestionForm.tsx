@@ -2,7 +2,7 @@ import { useState } from "react";
 import { createQuestion } from "../services/ExamService";
 import { Question, QuestionType } from "../types";
 
-export default (({ onSubmit }: { onSubmit: (newQuestion:Question) => void }) => {
+export default (({ onSubmit }: { onSubmit: (newQuestion: Question) => void }) => {
     const [questionText, setQuestionText] = useState("");
     const [answerText, setAnswerText] = useState("");
     const [pointsString, setPointsString] = useState("5");
@@ -27,7 +27,7 @@ export default (({ onSubmit }: { onSubmit: (newQuestion:Question) => void }) => 
         }
 
         setErrors(newErrors);
-        
+
         return Object.keys(newErrors).length === 0;
     }
 
@@ -52,17 +52,15 @@ export default (({ onSubmit }: { onSubmit: (newQuestion:Question) => void }) => 
                 <p className="error-text">{errors.answerError}</p>}
             <button className="button full-width"
                 onClick={async () => {
-                    if (validateFields())
-                    {
+                    if (validateFields()) {
                         const examId = localStorage.getItem("examId");
                         const newQuestion = {
-                            examId: examId ?? "",
                             questionType: "openEnded" as QuestionType,
                             points: Number(pointsString),
                             questionText: questionText,
                             answerText: answerText,
                         };
-                        createQuestion(newQuestion).then(()=>{
+                        createQuestion(examId ?? "", newQuestion).then(() => {
                             onSubmit(newQuestion);
                         })
                     }

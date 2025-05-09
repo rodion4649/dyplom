@@ -1,12 +1,12 @@
-import { getGeneralData } from "../services/ExamService";
+import { getExamData } from "../services/ExamService";
 import { startSession } from "../services/TestService";
-import { GeneralData } from "../types";
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { Exam } from "../types";
 
 export default () => {
     const navigate = useNavigate();
-    const [generalData, setGeneralData] = useState<GeneralData>({ title: "назва", description: "опис" });
+    const [examData, setExamData] = useState<Pick<Exam, "title" | "description">>({ title: "назва", description: "опис" });
     const [userName, setUserName] = useState<string>("");
 
     const location = useLocation();
@@ -18,21 +18,20 @@ export default () => {
         if (currentSessionToken) {
             navigate("/test/question");
         } else {
-            getGeneralData(examId ?? "").then((_generalData: GeneralData) => {
-                setGeneralData(_generalData);
+            getExamData(examId ?? "").then((_examData: Exam) => {
+                setExamData(_examData);
             }).catch((error) => {
                 console.error("Помилка отримання даних:", error);
             })
         }
     }, []);
 
-
     return (
         <div className="test-start-page center-container">
-            <div className="test-container">
-                <h1 className="test-title">{generalData.title}</h1>
+            <div className="test-container">    
+                <h1 className="test-title">{examData.title}</h1>
                 <p>
-                    {generalData.description}
+                    {examData.description}
                 </p>
                 <input type="text" className="text-input" placeholder="Ваше ім'я" value={userName}
                     onChange={(e) => { setUserName(e.target.value) }} />

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import SidebarNav from "../components/SidebarNav"
-import { getGeneralData } from "../services/ExamService";
+import SidebarNav from "../components/SidebarNav";
+import { getExamData, updateExamData } from "../services/ExamService";
 import { useLocation, useNavigate } from "react-router-dom";
 
 export default () => {
@@ -12,10 +12,10 @@ export default () => {
 
     useEffect(() => {
         const queryParams = new URLSearchParams(location.search);
-        const examId = queryParams.get("examId")
-        localStorage.setItem("examId", examId || "")
+        const examId = queryParams.get("examId");
+        localStorage.setItem("examId", examId || "");
 
-        getGeneralData(examId || "").then(({ title: _title, description: _description }) => {
+        getExamData(examId || "").then(({ title: _title, description: _description }) => {
             setTitle(_title);
             setDescription(_description);
         }).catch((error) => {
@@ -24,8 +24,26 @@ export default () => {
                 localStorage.removeItem("token");
                 navigate("/login");
             }
-        })
-    }, [navigate, location.search ]);
+        });
+    }, [navigate, location.search]);
+
+    const handleSave = async (event: React.MouseEvent) => {
+        event.preventDefault();
+        setErrors({});
+        if (!title) {
+            setErrors({ title: "Введіть назву тесту" });
+            return;
+        }
+
+        const examId = localStorage.getItem("examId") || "";
+        try {
+            await updateExamData(examId, { title, description });
+            alert("Дані успішно збережені");
+        } catch (error) {
+            console.error("Помилка оновлення даних екзамену:", error);
+            alert("Не вдалося зберегти зміни");
+        }
+    }
 
     return (
         <>
@@ -34,30 +52,17 @@ export default () => {
                 <h1 className="page-title">Головна</h1>
                 <p className="field-title">Назва</p>
                 <input className="text-input color-dark" placeholder="Назва тесту"
-                    value={title} onChange={(event) => {
-                        setTitle(event.target.value)
-                    }} />
+                    value={title} onChange={(event) => setTitle(event.target.value)} />
                 <p className="error-text">{errors?.title}</p>
                 <p className="field-title">Опис</p>
                 <textarea className="text-area" placeholder="Назва тесту" cols={36} rows={8}
-                    value={description} onChange={(event) => {
-                        setDescription(event.target.value)
-                    }} />
+                    value={description} onChange={(event) => setDescription(event.target.value)} />
                 <div>
-                    <button className="button" type="submit"
-                        onClick={(event) => {
-                            event.preventDefault();
-
-                            setErrors({});
-
-                            if (!title) {
-                                setErrors({ title: "Введіть назву тесту" });
-                            }
-                        }}>
+                    <button className="button" type="submit" onClick={handleSave}>
                         Зберегти
                     </button>
                 </div>
             </div>
         </>
-    )
-}
+    );
+};

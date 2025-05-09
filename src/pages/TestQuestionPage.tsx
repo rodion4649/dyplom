@@ -10,7 +10,7 @@ export default () => {
     const navigate = useNavigate();
     const [questions, setQuestions] = useState<Question[]>([{
         answers: [],
-        questionType: "text",
+        questionType: "TEXT",
         points: 0,
         questionText: ""
     }]);
@@ -21,7 +21,7 @@ export default () => {
         const callback = async () => {
 
             getSession().then((data) => {
-                if (data.isCompeted || (data.timeLimit && data.startTime + data.timeLimit * 1000 < Date.now())) {
+                if (data.isCompleted || (data.timeLimit && data.startTime + data.timeLimit * 1000 < Date.now())) {
                     navigate("/test/result");
                 } else {
                     setQuestions(data.questions);
@@ -76,14 +76,13 @@ export default () => {
                         <p>{questionsNumber - questions?.length + 1} з {questionsNumber}</p>
                     }
                     <h1 className="test-title">{questions?.[0].questionText}</h1>
-                    {questions?.[0].questionType === "singleChoice" && questions?.[0].answers &&
+                    {questions?.[0].questionType === "SINGLE_CHOISE" && questions?.[0].answers &&
                         <SingleChoiseAnswer answers={questions?.[0].answers} onSubmit={onSubmit} />
                     }
-                    {questions?.[0].questionType === "multipleChoice" && questions?.[0].answers &&
+                    {questions?.[0].questionType === "MULTIPLE_CHOISE" && questions?.[0].answers &&
                         <MultipleChoiseAnswer answers={questions?.[0].answers} onSubmit={onSubmit} />
                     }
-                    { }
-                    {questions?.[0].questionType === "text" &&
+                    {questions?.[0].questionType === "TEXT" &&
                         <TextAnswer onSubmit={onSubmit} />
                     }
                 </div>

@@ -1,57 +1,73 @@
-export const signup = ({ email, password }: { email: string, password: string }) => {
-    const response = {
-        ok: true,
-        json: async () => {
-            return {
-                data: {
-                    token: "example_token",
-                    user: {
-                        id: 1,
-                        email: email,
-                        name: "John Doe"
-                    }
-                },
-                status: 200,
-            }
-        }
-    } as Response;
+import { urlBase } from "../consts";
 
-    if (!response.ok) {
-        throw new Error("Login failed");
+export const signup = async ({
+    username,
+    password
+  }: {
+    username: string;
+    password: string;
+  }) => {
+    // Step 1: Create the user
+    const userResponse = await fetch(`${urlBase}/user/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        username,
+        password
+      })
+    });
+  
+    if (!userResponse.ok) {
+      const error = await userResponse.text();
+      throw new Error(`Signup failed: ${error}`);
     }
-
-    return response.json();
-}
-
-export const login = async ({ email, password }: { email: string, password: string }) => {
-    if (password !== "11111111") {
-        return new Promise((_, reject) => {
-            setTimeout(() => {
-                reject({
-                    ok: false,
-                })
-            }, 1000);
-        });
+  
+    // Step 2: Log in the user
+    const loginResponse = await fetch(`${urlBase}/generate-token`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        username, // assuming login uses `username`, not email
+        password
+      })
+    });
+  
+    if (!loginResponse.ok) {
+      throw new Error("Login after signup failed");
     }
+  
+    const json = await loginResponse.json();
+  
+    const token = json.token;
+    if (token) {
+      localStorage.setItem("token", token);
+    }
+  
+    const userId = json.user.id;
+    localStorage.setItem("userId", userId);
+  
+    return json;
+  };
+  
 
-    const response = {
-        ok: true,
-        json: async () => {
-            return {
-                token: "example_token",
-                user: {
-                    id: "1",
-                    email: email,
-                    name: "John Doe"
-                }
-            }
+export const login = async ({ username, password }: { username: string, password: string }) => {
+    const response = await fetch(`${urlBase}/generate-token`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
         },
-        status: 200,
-    } as Response;
-
+        body: JSON.stringify({
+            username,
+            password
+        })
+    })
     if (!response.ok) {
         throw new Error("Login failed");
-    }
+    }    
 
     const json = await response.json();
 
@@ -59,36 +75,9 @@ export const login = async ({ email, password }: { email: string, password: stri
     if (token) {
         localStorage.setItem("token", token);
     }
-    console.log(json);
 
     const userId = json.user.id;
     localStorage.setItem("userId", userId);
 
     return json;
-
-    // const response = await fetch(адреса, {
-    //     method: "POST",
-    //     headers: {
-    //         "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify({
-    //         email,
-    //         password
-    //     })
-    // })
-    // if (!response.ok) {
-    //     throw new Error("Login failed");
-    // }    
-
-    // const json = await response.json();
-
-    // const token = json.token;
-    // if (token) {
-    //     localStorage.setItem("token", token);
-    // }
-
-    // const userId = json.user.id;
-    // localStorage.setItem("userId", userId);
-
-    // return json;
 }

@@ -1,17 +1,12 @@
 export interface Exam {
     id: string,
-    generalData: GeneralData,
+    title: string,
+    description: string,
     questions: Question[],
-    results: Result[],
     settings: Settings,
 }
 
-export interface GeneralData {
-    title: string,
-    description: string,
-}
-
-export type QuestionType = "text" | "multipleChoice" | "singleChoice";
+export type QuestionType = "TEXT" | "MULTIPLE_CHOISE" | "SINGLE_CHOISE";
 
 export interface SelectableAnswer {
     isCorrect: boolean,
@@ -31,13 +26,10 @@ export interface Result {
     points: number,
     maxPoints: number,
     isCompleted: boolean,
-    minutesTaken: number,
-    secondsTaken: number,
+    timeTaken: number,
 }
 
 export interface Settings {
-    showExplanation?: boolean,
-    isTimeLimitPresent?: boolean,
     questionsOrder?: "inOrder" | "random",
     timeLimit?: number,
 }
@@ -48,14 +40,8 @@ export interface TestSession {
     examId: string,
     startTime: number,
     timeLimit?: number,
-    isCompeted: boolean,
+    isCompleted: boolean,
     // це тільки ті питання, що залишилися
     questions: Question[],
     totalQuestionsNumber: number,
-}
-
-export interface TestResults {
-    points: number,
-    maxPoints: number,
-    timeTaken: number,
 }

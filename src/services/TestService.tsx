@@ -1,9 +1,9 @@
 import { urlBase } from "../consts";
-import { TestResults, TestSession } from "../types";
+import { Result, TestSession } from "../types";
 
-export const startSession = async (userName: string, examId: string) => {
+export const startSession = async (userName: string, examId: string): Promise<{ sessionToken: string }> => {
     return new Promise((resolve) => {
-        resolve(true);
+        resolve({ sessionToken: "token" });
     })
 
     const response = await fetch(`${urlBase}/startSession`, {
@@ -32,17 +32,17 @@ export const getSession = async (): Promise<TestSession> => {
             userName: "zalupa",
             examId: "",
             startTime: 0,
-            isCompeted: false,
+            isCompleted: false,
             questions: [
 
                 {
-                    questionType: "text",
+                    questionType: "TEXT",
                     points: 15,
                     questionText: "1?",
                     answerText: "1",
                 },
                 {
-                    questionType: "multipleChoice",
+                    questionType: "MULTIPLE_CHOISE",
                     points: 15,
                     questionText: "2?",
                     answers: [
@@ -53,7 +53,7 @@ export const getSession = async (): Promise<TestSession> => {
                     ]
                 },
                 {
-                    questionType: "singleChoice",
+                    questionType: "SINGLE_CHOISE",
                     points: 15,
                     questionText: "3?",
                     answers: [
@@ -106,12 +106,14 @@ export const sendAnswer = async (answer: string | number | number[]): Promise<bo
     return json;
 }
 
-export const getTestResults = async (): Promise<TestResults> => {
+export const getTestResults = async (): Promise<Result> => {
     return new Promise((resolve) => {
         resolve({
-            points: 1,
-            maxPoints: 10,
-            timeTaken: 0
+            isCompleted: true,
+            maxPoints: 100,
+            points: 50,
+            timeTaken: 50,
+            user: "asdf"
         });
     })
 

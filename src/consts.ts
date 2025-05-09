@@ -1,1 +1,1 @@
-export const urlBase = "https://api.example.com/exams";
+export const urlBase = "http://localhost:8080/";

@@ -75,6 +75,8 @@
 }
 
 .modal-content {
+    max-height: 90%;
+    overflow-y: auto;
     background-color: #fff;
     padding: 20px;
     border-radius: 8px;

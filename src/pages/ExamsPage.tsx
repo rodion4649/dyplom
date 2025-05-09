@@ -13,9 +13,7 @@ export default () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const userId = localStorage.getItem("userId");
-
-        getExamsList(userId ?? "").then((exams: Exam[]) => {
+        getExamsList().then((exams: Exam[]) => {
             setExamsList(exams);
         }).catch((error) => {
             console.error("Помилка отримання екзаменів:", error);
@@ -57,10 +55,10 @@ export default () => {
                                                 {index + 1}
                                             </div>
                                             <div className="table-cell w-[200px]">
-                                                {exam.generalData.title}
+                                                {exam.title}
                                             </div>
                                             <div className="table-cell no-overflow">
-                                                {exam.generalData.description}
+                                                {exam.description}
                                             </div>
                                         </div>
                                     </Link>

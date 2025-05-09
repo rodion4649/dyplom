@@ -9,7 +9,7 @@ export default () => {
     return (
         <div className="add-new-question-form">
             <p className="field-title">Назва контрольної</p>
-            <input className="text-input" value={title}
+            <input className="text-input color-dark" value={title}
                 onChange={(e) => {
                     setTitle(e.target.value);
                 }}>
@@ -20,7 +20,7 @@ export default () => {
                         alert("Введіть назву контрольної");
                     } else {
                         const newExam = await createExam(title);
-                        navigate(`/start?id=${newExam.id}`);
+                        navigate(`/start?examId=${newExam.id}`);
                     }
                 }}>
                     Створити

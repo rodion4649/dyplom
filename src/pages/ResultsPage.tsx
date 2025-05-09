@@ -62,7 +62,7 @@ export default () => {
                                         {result.isCompleted ? "Так" : "Ні"}
                                     </div>
                                     <div className="table-cell">
-                                        {result.minutesTaken} хв. {result.secondsTaken} сек.
+                                        {(Math.floor(result.timeTaken / 60))} хв. {result.timeTaken % 60} сек.
                                     </div>
                                 </div>
                             </div>
@@ -72,7 +72,7 @@ export default () => {
                 <button className="button" onClick={() => {
                     const element = document.createElement("a");
                     const csvContent = results.map(r =>
-                        `${r.user} отримав ${r.points} з ${r.maxPoints} і ${r.isCompleted ? "" : "не "}дійшов до кінця за ${r.minutesTaken} хв. ${r.secondsTaken} сек.`
+                        `${r.user} отримав ${r.points} з ${r.maxPoints} і ${r.isCompleted ? "" : "не "}дійшов до кінця за ${Math.floor(r.timeTaken / 60)} хв. ${r.timeTaken % 60} сек.`
                     ).join("\n");
                     const file = new Blob([csvContent], { type: 'text/plain' });
                     element.href = URL.createObjectURL(file);

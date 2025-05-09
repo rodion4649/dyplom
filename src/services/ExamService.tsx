@@ -1,18 +1,17 @@
 import { urlBase } from "../consts";
-import { Exam, GeneralData, Question, Result, Settings } from "../types";
-
+import { Exam, Question, Result, Settings } from "../types";
 
 export const createExam = async (title: string): Promise<Exam> => {
-    const response = await fetch(`${urlBase}/createExam`, {
+    const response = await fetch(`${urlBase}/quiz/`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${localStorage.getItem("token")}`
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
         body: JSON.stringify({
             title,
-        })
-    })
+        }),
+    });
 
     if (!response.ok) {
         throw new Error("Помилка створення екзамену");
@@ -21,16 +20,16 @@ export const createExam = async (title: string): Promise<Exam> => {
     const json = await response.json();
 
     return json;
-}
+};
 
-export const getExamsList = async (userId: string): Promise<Exam[]> => {
-    const response = await fetch(`${urlBase}/getExamList?userId=${userId}`, {
+export const getExamsList = async (): Promise<Exam[]> => {
+    const response = await fetch(`${urlBase}/quiz/my-quizzes`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${localStorage.getItem("token")}`
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-    })
+    });
 
     if (!response.ok) {
         throw new Error("Помилка отримання списку екзаменів");
@@ -39,88 +38,36 @@ export const getExamsList = async (userId: string): Promise<Exam[]> => {
     const json = await response.json();
 
     return json;
+};
 
-    // return new Promise((resolve, reject) => {
-    //     setTimeout(() => {
-    //         const token = localStorage.getItem("token") 
-    //         const userId = localStorage.getItem("userId")
-    //         if (token) {
-    //             resolve([
-    //                 {
-    //                     id: "examId_" + token,
-    //                     generalData: {
-    //                         title: "Тест" + token,
-    //                         description: "Це тестфівафіва Це тестфівафіва Це тестфівафіва Це тестфівафіва Це тестфівафіва Це тестфівафіва Це тестфівафіва Це тестфівафіва Це тестфівафіва Це тестфівафіва Це тестфівафіва Це тестфівафіва Це тестфівафіва Це тестфівафіва Це тестфівафіва "
-    //                     },
-    //                     questions: [{
-    //                         questionType: "openEnded",
-    //                         points: 15,
-    //                         questionText: "co tam?",
-    //                     },
-    //                     {
-    //                         questionType: "multipleChoice",
-    //                         points: 1,
-    //                         questionText: "siema",
-    //                     }],
-    //                     results: [{
-    //                         user: "żółw",
-    //                         points: 12,
-    //                         maxPoints: 15,
-    //                         isCompleted: false,
-    //                         minutesTaken: 5,
-    //                         secondsTaken: 14
-    //                     }],
-    //                     settings: {
-    //                         showExplanation: true,
-    //                         isTimeLimitPresent: false,
-    //                         questionsOrder: "inOrder"
-    //                     }
-    //                 }]
-    //             );
-    //         } else {
-    //             reject({ message: "Нема такого користувача", code: 401 });
-    //         }
-    //     }, 1000);
-    // })
-}
-
-export const getGeneralData = async (examId: string): Promise<GeneralData> => {
-    const data = await fetch(`${urlBase}/getGeneralData?examId=${examId}`, {
+export const getExamData = async (examId: string): Promise<Exam> => {
+    const data = await fetch(`${urlBase}/quiz/${examId}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${localStorage.getItem("token")}`
-        }
-    })
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+    });
 
     const json = await data.json();
     return json;
-}
+};
 
 export const createQuestion = async (
+    examId: string,
     {
-        examId,
         questionType,
         points,
         questionText,
         answerText,
         answers,
-        correctAnswers
-    }: {
-        examId: string,
-        questionType: string,
-        points: number,
-        questionText: string,
-        answerText?: string,
-        answers?: { isCorrect: boolean, answerText: string }[],
-        correctAnswers?: number[]
-    }
+    }: Question
 ) => {
-    const response = await fetch(`${urlBase}/createQuestion`, {
+    const response = await fetch(`${urlBase}/question/${examId}`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${localStorage.getItem("token")}`
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
         body: JSON.stringify({
             examId,
@@ -129,9 +76,9 @@ export const createQuestion = async (
             questionText,
             answerText,
             answers,
-            correctAnswers
-        })
-    })
+        }),
+    });
+
 
     if (!response.ok) {
         throw new Error("Помилка створення питання");
@@ -140,56 +87,6 @@ export const createQuestion = async (
     const json = await response.json();
 
     return json;
-    // return new Promise((resolve) => {
-    //     setTimeout(() => {
-    //         console.log("Створено питання:", {
-    //             questionType,
-    //             points,
-    //             questionText,
-    //             answerText,
-    //             answers,
-    //             correctAnswers
-    //         });
-    //         resolve(true);
-    //     }, 1000);
-    // })
-}
-
-export const getQuestion = async (examId: string, index: number): Promise<Question> => {
-    const response = await fetch(`${urlBase}/getQuestion?examId=${examId}&index=${index}`, {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${localStorage.getItem("token")}`
-        },
-    })
-
-    if (!response.ok) {
-        throw new Error("Помилка отримання питань");
-    }
-
-    const json = await response.json();
-
-    return json;
-
-    // return new Promise((resolve, reject) => {
-    //     setTimeout(() => {
-    //         if (localStorage.getItem("token")) {
-    //             resolve([{
-    //                 questionType: "openEnded",
-    //                 points: 15,
-    //                 questionText: "co tam?",
-    //             },
-    //             {
-    //                 questionType: "multipleChoice",
-    //                 points: 1,
-    //                 questionText: "siema",
-    //             }]);
-    //         } else {
-    //             reject({ message: "Нема такого користувача", code: 401 });
-    //         }
-    //     }, 1000);
-    // })
 }
 
 export const getQuestions = async (examId: string): Promise<Question[]> => {
@@ -197,9 +94,9 @@ export const getQuestions = async (examId: string): Promise<Question[]> => {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${localStorage.getItem("token")}`
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-    })
+    });
 
     if (!response.ok) {
         throw new Error("Помилка отримання питань");
@@ -208,35 +105,16 @@ export const getQuestions = async (examId: string): Promise<Question[]> => {
     const json = await response.json();
 
     return json;
-
-    // return new Promise((resolve, reject) => {
-    //     setTimeout(() => {
-    //         if (localStorage.getItem("token")) {
-    //             resolve([{
-    //                 questionType: "openEnded",
-    //                 points: 15,
-    //                 questionText: "co tam?",
-    //             },
-    //             {
-    //                 questionType: "multipleChoice",
-    //                 points: 1,
-    //                 questionText: "siema",
-    //             }]);
-    //         } else {
-    //             reject({ message: "Нема такого користувача", code: 401 });
-    //         }
-    //     }, 1000);
-    // })
-}
+};
 
 export const getResults = async (examId: string): Promise<Result[]> => {
     const response = await fetch(`${urlBase}/getResults?examId=${examId}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${localStorage.getItem("token")}`
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-    })
+    });
 
     if (!response.ok) {
         throw new Error("Помилка отримання показників");
@@ -245,68 +123,35 @@ export const getResults = async (examId: string): Promise<Result[]> => {
     const json = await response.json();
 
     return json;
-
-    // return new Promise((resolve, reject) => {
-    //     setTimeout(() => {
-    //         if (localStorage.getItem("token")) {
-    //             resolve([{
-    //                 user: "żółw",
-    //                 points: 12,
-    //                 maxPoints: 15,
-    //                 isCompleted: false,
-    //                 minutesTaken: 5,
-    //                 secondsTaken: 14
-    //             }]);
-    //         } else {
-    //             reject({ message: "Нема такого користувача", code: 401 });
-    //         }
-    //     }, 1000);
-    // })
-}
+};
 
 export const getSettings = async (examId: string): Promise<Settings> => {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            if (localStorage.getItem("token")) {
-                resolve({
-                    showExplanation: true,
-                    isTimeLimitPresent: true,
-                    timeLimit : 1600,
-                    questionsOrder: "inOrder"
-                });
-            } else {
-                reject({ message: "Нема такого користувача", code: 401 });
-            }
-        }, 1000);
-    })
+    const response = await fetch(`${urlBase}/quiz/${examId}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+    });
 
-    // const response = await fetch(`${urlBase}/getSettings?examId=${examId}`, {
-    //     method: "GET",
-    //     headers: {
-    //         "Content-Type": "application/json",
-    //         "Authorization": `Bearer ${localStorage.getItem("token")}`
-    //     },
-    // })
+    if (!response.ok) {
+        throw new Error("Помилка отримання показників");
+    }
 
-    // if (!response.ok) {
-    //     throw new Error("Помилка отримання нашалштувань");
-    // }
+    const json = await response.json();
 
-    // const json = await response.json();
-
-    // return json;
-
-}
+    return json;
+};
 
 export const updateSettings = async (examId: string, settings: Settings) => {
-    const response = await fetch(`${urlBase}/getSettings?examId=${examId}`, {
+    const response = await fetch(`${urlBase}/quiz/${examId}/settings`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${localStorage.getItem("token")}`
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        body: JSON.stringify(settings)
-    })
+        body: JSON.stringify(settings),
+    });
 
     if (!response.ok) {
         throw new Error("Помилка отримання нашалштувань");
@@ -315,10 +160,22 @@ export const updateSettings = async (examId: string, settings: Settings) => {
     const json = await response.json();
 
     return json;
-    // return new Promise((resolve) => {
-    //     setTimeout(() => {
-    //         console.log("Збережено налаштування:", settings);
-    //         resolve(true);
-    //     }, 1000);
-    // })
-}
+};
+
+export const updateExamData = async (examId: string, data: Pick<Exam, "title" | "description">) => {
+    const response = await fetch(`${urlBase}/quiz/${examId}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+        throw new Error("Помилка оновлення даних тесту");
+    }
+
+    const json = await response.json();
+    return json;
+};
