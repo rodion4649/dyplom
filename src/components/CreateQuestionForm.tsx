@@ -14,9 +14,9 @@ export default ({ onSubmit }: { onSubmit: (newQuestion:Question) => void }) => {
                 onChange={(e) => {
                     setQuestionType(e.target.value as QuestionType);
                 }}>
-                <option value="multipleChoice">Вибір декількох</option>
-                <option value="singleChoice">Вибір одного</option>
-                <option value="text">Відкрите питання</option>
+                <option value="MULTIPLE_CHOICE">Вибір декількох</option>
+                <option value="SINGLE_CHOICE">Вибір одного</option>
+                <option value="TEXT">Відкрите питання</option>
             </select>
 
             {questionType === "TEXT" &&

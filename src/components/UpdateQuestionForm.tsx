@@ -1,27 +1,27 @@
 import { useState } from "react";
 import CreateOpenEndedQuestionForm from "./CreateOpenEndedQuestionForm";
 import CreateMultipleChoiseQuestionForm from "./CreateMultipleChoiseQuestionForm.tsx";
-import { Question } from "../types.tsx";
+import { Question, QuestionType } from "../types.tsx";
 
 export default ({ onSubmit }: { onSubmit: (newQuestion:Question) => void }) => {
-    const [questionType, setQuestionType] = useState("multiple-choice");
+    const [questionType, setQuestionType] = useState<QuestionType>("MULTIPLE_CHOICE");
 
     return (
         <div className="add-new-question-form">
             <p className="field-title">Тип питання</p>
             <select className="text-input" value={questionType}
                 onChange={(e) => {
-                    setQuestionType(e.target.value);
+                    setQuestionType(e.target.value as QuestionType);
                 }}>
-                <option value="multiple-choice">Вибір з декількох варіантів</option>
-                <option value="open-ended">Відкрите питання</option>
+                <option value="MULTIPLE_CHOICE">Вибір з декількох варіантів</option>
+                <option value="TEXT">Відкрите питання</option>
             </select>
 
-            {questionType === "open-ended" &&
+            {questionType === "TEXT" &&
                 <CreateOpenEndedQuestionForm onSubmit={onSubmit}/>
             }
 
-            {questionType === "multiple-choice" &&
+            {questionType === "MULTIPLE_CHOICE" &&
                 <CreateMultipleChoiseQuestionForm onSubmit={onSubmit}/>
             }
         </div>
