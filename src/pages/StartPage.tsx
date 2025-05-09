@@ -13,7 +13,7 @@ export default () => {
     useEffect(() => {
         const queryParams = new URLSearchParams(location.search);
         const examId = queryParams.get("examId");
-        if (!localStorage.getItem("examId"))
+        if (examId)
             localStorage.setItem("examId", examId || "");
 
         getExamData(examId || "").then(({ title: _title, description: _description }) => {
