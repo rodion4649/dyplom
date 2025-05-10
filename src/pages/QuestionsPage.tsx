@@ -88,7 +88,8 @@ export default () => {
                             .map((row) => row.split(","));
                           console.log(rows);
                           const parsedQuestions = rows.map(
-                            ([questionType, points, questionText]) => ({
+                            ([quesId, questionType, points, questionText]) => ({
+                              quesId: Number(quesId),
                               questionType: questionType.trim() as QuestionType,
                               points: parseInt(points.trim(), 10),
                               questionText: questionText.trim(),

@@ -9,6 +9,7 @@ import TextAnswer from "../components/TextAnswer";
 export default () => {
     const navigate = useNavigate();
     const [questions, setQuestions] = useState<Question[]>([{
+        quesId: 1,
         answers: [],
         questionType: "TEXT",
         points: 0,

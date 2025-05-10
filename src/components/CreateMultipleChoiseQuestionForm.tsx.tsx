@@ -138,13 +138,15 @@ export default ({ onSubmit }: { onSubmit: (newQuestion: Question) => void }) => 
                     if (validateFields()) {
                         const examId = localStorage.getItem("examId");
                         const newQuestion: Question = {
+                            quesId: 0,
                             questionType: "MULTIPLE_CHOICE",
                             points: Number(pointsString),
                             questionText,
                             answers
                         };
-                        await createQuestion(examId ?? "", newQuestion);
-                        onSubmit(newQuestion);
+
+                        const quesId = await createQuestion(examId ?? "", newQuestion);
+                        onSubmit({ ...newQuestion, quesId });
                     }
                 }}
             >

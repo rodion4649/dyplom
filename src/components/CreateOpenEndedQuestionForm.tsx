@@ -37,14 +37,15 @@ export default ({ onSubmit }: { onSubmit: (newQuestion: Question) => void }) => 
 
         const examId = localStorage.getItem("examId");
         const newQuestion: Question = {
+            quesId: 1,
             questionType: "TEXT",
             points: Number(pointsString),
             questionText,
             answerText,
         };
 
-        await createQuestion(examId ?? "", newQuestion);
-        onSubmit(newQuestion);
+        const quesId = await createQuestion(examId ?? "", newQuestion);
+        onSubmit({ ...newQuestion, quesId });
     };
 
     return (
