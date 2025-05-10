@@ -159,7 +159,7 @@ export default () => {
           <div className="table">
             <div className="table-row-header">
               <div className="table-cell w-[20px]">#</div>
-              <div className="table-cell w-[200px]">Вид питання</div>
+              <div className="table-cell w-[250px]">Вид питання</div>
               <div className="table-cell">Питання</div>
             </div>
             {questionsList.map((question, index) => {
@@ -167,7 +167,7 @@ export default () => {
                 <div className="table-row">
                   <div className="flex ml-[8px]">
                     <div className="table-cell w-[20px]">{index + 1}</div>
-                    <div className="table-cell w-[200px]">
+                    <div className="table-cell w-[250px]">
                       {(() => {
                         switch (question.questionType) {
                           case "MULTIPLE_CHOICE":
