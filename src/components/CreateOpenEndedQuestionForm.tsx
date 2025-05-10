@@ -44,7 +44,7 @@ export default ({ onSubmit }: { onSubmit: (newQuestion: Question) => void }) => 
             answerText,
         };
 
-        const quesId = await createQuestion(examId ?? "", newQuestion);
+        const { quesId } = await createQuestion(examId ?? "", newQuestion);
         onSubmit({ ...newQuestion, quesId });
     };
 
