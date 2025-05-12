@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 export default () => {
   const [isQuestionsModalShown, setIsQuestionModalShown] = useState(false);
   const [isImportModalShown, setIsImportModalShown] = useState(false);
+  const [editingQuestionIndex, setEditingQuestionIndex] = useState(-1);
 
   const [importedFile, setImportedFile] = useState<File | null>(null);
 
@@ -46,11 +47,24 @@ export default () => {
               }}
             >
               <CreateQuestionForm
+                startingValues={editingQuestionIndex === -1 ? undefined : {
+                  quesId: questionsList[editingQuestionIndex].quesId,
+                  questionType: questionsList[editingQuestionIndex].questionType,
+                  startingAnswers: questionsList[editingQuestionIndex].answers,
+                  startingAnswerText: questionsList[editingQuestionIndex].answerText,
+                  startingQuestionText: questionsList[editingQuestionIndex].questionText,
+                  startingPoints: questionsList[editingQuestionIndex].points
+                }}
                 onSubmit={(newQuestion) => {
-                  console.log(newQuestion);
-                  setQuestionsList(() => {
-                    return [...questionsList, newQuestion];
-                  });
+                  if (editingQuestionIndex === -1)
+                    setQuestionsList(() => {
+                      return [...questionsList, newQuestion];
+                    });
+                  else {
+                    setQuestionsList(() => {
+                      return [...questionsList, newQuestion];
+                    });
+                  }
                   setIsQuestionModalShown(false);
                 }}
               />
@@ -178,7 +192,22 @@ export default () => {
                   </div>
                   <div className="flex mr-[8px]">
                     <div className="table-cell w-[24px]">
-                      <button>
+                      <button onClick={async () => {
+                        setEditingQuestionIndex(index);
+                        setIsQuestionModalShown(true);
+                        // try {
+                        //   await (question.quesId);
+                        //   setQuestionsList(
+                        //     questionsList.filter((q) => q.quesId !== question.quesId)
+                        //   );
+                        // } catch (error) {
+                        //   console.error(
+                        //     "Помилка при видаленні питання:",
+                        //     error
+                        //   );
+                        //   alert("Не вдалося видалити питання.");
+                        // }
+                      }}>
                         <EditIcon />
                       </button>
                     </div>

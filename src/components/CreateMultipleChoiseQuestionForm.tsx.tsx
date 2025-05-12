@@ -1,12 +1,17 @@
 import { useState } from "react";
-import { createQuestion } from "../services/ExamService.tsx";
+import { createQuestion, updateQuestion } from "../services/ExamService.tsx";
 import DeleteIcon from "../assets/icons/DeleteIcon.tsx";
-import { Question } from "../types.tsx";
+import { Question, SelectableAnswer } from "../types.tsx";
 
-export default ({ onSubmit }: { onSubmit: (newQuestion: Question) => void }) => {
-    const [pointsString, setPointsString] = useState("5");
-    const [questionText, setQuestionText] = useState("");
-    const [answers, setAnswers] = useState<{ isCorrect: boolean; answerText: string }[]>([
+export default ({ startingValues, onSubmit }:
+    {
+        startingValues?: { quesId: number, startingPoints?: number, startingQuestionText: string, startingAnswers?: SelectableAnswer[] },
+        onSubmit: (newQuestion: Question) => void
+    }
+) => {
+    const [pointsString, setPointsString] = useState(startingValues?.startingPoints?.toString() ?? "5");
+    const [questionText, setQuestionText] = useState(startingValues?.startingQuestionText ?? "");
+    const [answers, setAnswers] = useState<{ isCorrect: boolean; answerText: string }[]>(startingValues?.startingAnswers ?? [
         { isCorrect: false, answerText: "" },
         { isCorrect: false, answerText: "" },
         { isCorrect: false, answerText: "" }
@@ -145,8 +150,13 @@ export default ({ onSubmit }: { onSubmit: (newQuestion: Question) => void }) => 
                             answers
                         };
 
-                        const { quesId } = await createQuestion(examId ?? "", newQuestion);
-                        onSubmit({ ...newQuestion, quesId });
+                        if (!startingValues?.quesId) {
+                            const { quesId } = await createQuestion(examId ?? "", newQuestion);
+                            onSubmit({ ...newQuestion, quesId });
+                        } else {
+                            const { quesId } = await updateQuestion(startingValues?.quesId, newQuestion);
+                            onSubmit({ ...newQuestion, quesId });
+                        }
                     }
                 }}
             >

@@ -1,11 +1,14 @@
 import { useState } from "react";
 import CreateOpenEndedQuestionForm from "./CreateOpenEndedQuestionForm";
 import CreateMultipleChoiseQuestionForm from "./CreateMultipleChoiseQuestionForm.tsx";
-import { Question, QuestionType } from "../types.tsx";
+import { Question, QuestionType, SelectableAnswer } from "../types.tsx";
 import CreateSingleChoiseQuestionForm from "./CreateSingleChoiseQuestionForm.tsx";
 
-export default ({ onSubmit }: { onSubmit: (newQuestion:Question) => void }) => {
-    const [questionType, setQuestionType] = useState<QuestionType>("MULTIPLE_CHOICE");
+export default ({ startingValues, onSubmit }: {
+    startingValues?: { quesId: number, questionType: QuestionType, startingPoints?: number, startingQuestionText: string, startingAnswerText?: string, startingAnswers?: SelectableAnswer[] },
+    onSubmit: (newQuestion: Question) => void
+}) => {
+    const [questionType, setQuestionType] = useState<QuestionType>(startingValues?.questionType ?? "MULTIPLE_CHOICE");
 
     return (
         <div className="add-new-question-form">
@@ -20,15 +23,15 @@ export default ({ onSubmit }: { onSubmit: (newQuestion:Question) => void }) => {
             </select>
 
             {questionType === "TEXT" &&
-                <CreateOpenEndedQuestionForm onSubmit={onSubmit}/>
+                <CreateOpenEndedQuestionForm startingValues={startingValues} onSubmit={onSubmit} />
             }
 
             {questionType === "MULTIPLE_CHOICE" &&
-                <CreateMultipleChoiseQuestionForm onSubmit={onSubmit}/>
+                <CreateMultipleChoiseQuestionForm startingValues={startingValues} onSubmit={onSubmit} />
             }
 
             {questionType === "SINGLE_CHOICE" &&
-                <CreateSingleChoiseQuestionForm onSubmit={onSubmit}/>
+                <CreateSingleChoiseQuestionForm startingValues={startingValues} onSubmit={onSubmit} />
             }
 
         </div>

@@ -1,11 +1,14 @@
 import { useState } from "react";
-import { createQuestion } from "../services/ExamService";
+import { createQuestion, updateQuestion } from "../services/ExamService";
 import { Question } from "../types";
 
-export default ({ onSubmit }: { onSubmit: (newQuestion: Question) => void }) => {
-    const [questionText, setQuestionText] = useState("");
-    const [answerText, setAnswerText] = useState("");
-    const [pointsString, setPointsString] = useState("5");
+export default ({ startingValues, onSubmit }: {
+    startingValues?: { quesId: number, startingPoints?: number, startingQuestionText: string, startingAnswerText?: string },
+    onSubmit: (newQuestion: Question) => void
+}) => {
+    const [pointsString, setPointsString] = useState(startingValues?.startingPoints?.toString() ?? "5");
+    const [questionText, setQuestionText] = useState(startingValues?.startingQuestionText ?? "");
+    const [answerText, setAnswerText] = useState(startingValues?.startingAnswerText ?? "");
 
     const [errors, setErrors] = useState<{
         pointsError?: string;
@@ -44,8 +47,13 @@ export default ({ onSubmit }: { onSubmit: (newQuestion: Question) => void }) => 
             answerText,
         };
 
-        const { quesId } = await createQuestion(examId ?? "", newQuestion);
-        onSubmit({ ...newQuestion, quesId });
+        if (!startingValues?.quesId) {
+            const { quesId } = await createQuestion(examId ?? "", newQuestion);
+            onSubmit({ ...newQuestion, quesId });
+        } else {
+            const { quesId } = await updateQuestion(startingValues?.quesId, newQuestion);
+            onSubmit({ ...newQuestion, quesId });
+        };
     };
 
     return (

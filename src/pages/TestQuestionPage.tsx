@@ -19,20 +19,31 @@ export default () => {
     },
   ]);
   const [questionsNumber, setQuestionsNumber] = useState<number>(0);
+  const [timeLeft, setTimeLeft] = useState<{ minutes: number, seconds: number }>({ minutes: 0, seconds: 0 });
   const sessionToken = localStorage.getItem("currentSessionToken");
 
   useEffect(() => {
     const callback = async () => {
       getSession(sessionToken || "")
-        .then((data) => {
+        .then(async (data) => {
           if (
             data.completed ||
             (data.timeLimit &&
-              data.startTime + data.timeLimit * 1000 < Date.now())
-          ) {
+              data.startTime.getTime() + data.timeLimit * 1000 < Date.now()
+            )) {
             navigate("/test/result");
           } else {
-            console.log(data);
+            if (data.timeLimit) {
+              const interval = setInterval(() => {
+                const currentTime = Date.now();
+                const timeDiff = Math.floor(data.timeLimit as number - (currentTime - data.startTime.getTime()) / 1000);
+                const minutesLeft = Math.floor(timeDiff / 60);
+                const secondsLeft = timeDiff % 60;
+                setTimeLeft({ minutes: minutesLeft, seconds: secondsLeft });
+              }, 1000);
+              return () => clearInterval(interval);
+            }
+
             setQuestions(data.questions);
             setQuestionsNumber(data.totalQuestionsNumber);
           }
@@ -41,18 +52,6 @@ export default () => {
           console.error("Помилка отримання даних:", error);
           navigate("/test/start");
         });
-      // const settings = await getSettings(examId ?? "")
-      // setExamSettings(settings);
-      // if (settings.timeLimit) {
-      //     const interval = setInterval(() => {
-      //         const currentTime = Date.now();
-      //         const timeDiff = Math.floor(settings.timeLimit as number - (currentTime - startTime) / 1000);
-      //         const minutesLeft = Math.floor(timeDiff / 60);
-      //         const secondsLeft = timeDiff % 60;
-      //         setTimeLeft({ minutes: minutesLeft, seconds: secondsLeft });
-      //     }, 1000);
-      //     return () => clearInterval(interval);
-      // }
     };
     callback();
   }, []);
@@ -77,13 +76,12 @@ export default () => {
   return (
     <>
       <div className="test-start-page center-container">
-        {/* <div>{timeLeft}</div> */}
         <div className="test-container">
           {
-            // examSetting?.timeLimit &&
-            // <div className="test-time-limit">
-            //     <p>Час до закінчення: {timeLeft.minutes ? `${timeLeft.minutes} хв.` : ""} {timeLeft.seconds} сек.</p>
-            // </div>
+
+            <div className="test-time-limit">
+              <p>Час до закінчення: {timeLeft.minutes ? `${timeLeft.minutes} хв.` : ""} {timeLeft.seconds} сек.</p>
+            </div>
           }
           {questions && (
             <p>

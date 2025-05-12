@@ -79,14 +79,40 @@ export const createQuestion = async (
         }),
     });
 
-    console.log(JSON.stringify({
-        examId,
+    if (!response.ok) {
+        throw new Error("Помилка створення питання");
+    }
+
+    const json = await response.json();
+
+    return json;
+}
+
+export const updateQuestion = async (
+    questionId: number,
+    {
         questionType,
         points,
         questionText,
         answerText,
         answers,
-    }))
+    }: Question
+) => {
+    const response = await fetch(`${urlBase}/question/${questionId}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({
+            questionType,
+            points,
+            questionText,
+            answerText,
+            answers,
+        }),
+    });
+
     if (!response.ok) {
         throw new Error("Помилка створення питання");
     }
@@ -125,51 +151,51 @@ export const deleteQuestion = async (qid: number): Promise<void> => {
 
 
 export const getQuestions = async (examId: string): Promise<Question[]> => {
-    // return new Promise((resolve) => {
-    //     resolve([{
-    //         quesId: 1,
-    //         points: 5,
-    //         questionText: "a?",
-    //         questionType: "MULTIPLE_CHOICE",
-    //         answers: [{
-    //             answerText: "1",
-    //             isCorrect: true,
-    //         },
-    //         {
-    //             answerText: "2",
-    //             isCorrect: false,
-    //         },
-    //         {
-    //             answerText: "1",
-    //             isCorrect: false,
-    //         }]
-    //     },
-    //     {
-    //         quesId: 3,
-    //         points: 5,
-    //         questionText: "a?",
-    //         questionType: "SINGLE_CHOICE",
-    //         answers: [{
-    //             answerText: "1",
-    //             isCorrect: true,
-    //         },
-    //         {
-    //             answerText: "2",
-    //             isCorrect: false,
-    //         },
-    //         {
-    //             answerText: "1",
-    //             isCorrect: false,
-    //         }]
-    //     },
-    //     {
-    //         quesId: 4,
-    //         points: 5,
-    //         questionText: "a?",
-    //         questionType: "TEXT",
-    //         answerText: "odpowiedź",
-    //     }]);
-    // });
+    return new Promise((resolve) => {
+        resolve([{
+            quesId: 1,
+            points: 5,
+            questionText: "a?",
+            questionType: "MULTIPLE_CHOICE",
+            answers: [{
+                answerText: "1",
+                isCorrect: true,
+            },
+            {
+                answerText: "2",
+                isCorrect: false,
+            },
+            {
+                answerText: "1",
+                isCorrect: false,
+            }]
+        },
+        {
+            quesId: 3,
+            points: 5,
+            questionText: "1234?",
+            questionType: "SINGLE_CHOICE",
+            answers: [{
+                answerText: "1",
+                isCorrect: true,
+            },
+            {
+                answerText: "2",
+                isCorrect: false,
+            },
+            {
+                answerText: "1",
+                isCorrect: false,
+            }]
+        },
+        {
+            quesId: 4,
+            points: 5,
+            questionText: "34?",
+            questionType: "TEXT",
+            answerText: "odpowiedź",
+        }]);
+    });
 
     const response = await fetch(`${urlBase}/question?examId=${examId}`, {
         method: "GET",

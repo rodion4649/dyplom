@@ -39,7 +39,7 @@ export interface TestSession {
     id: string,
     userName: string,
     examId: number,
-    startTime: number,
+    startTime: Date,
     timeLimit?: number,
     completed: boolean,
     // це тільки ті питання, що залишилися
