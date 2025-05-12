@@ -80,13 +80,13 @@ export const createQuestion = async (
     });
 
     console.log(JSON.stringify({
-            examId,
-            questionType,
-            points,
-            questionText,
-            answerText,
-            answers,
-        }))
+        examId,
+        questionType,
+        points,
+        questionText,
+        answerText,
+        answers,
+    }))
     if (!response.ok) {
         throw new Error("Помилка створення питання");
     }
@@ -111,20 +111,66 @@ export const deleteExam = async (examId: string): Promise<void> => {
 
 
 export const deleteQuestion = async (qid: number): Promise<void> => {
-  const response = await fetch(`${urlBase}/question/${qid}`, {
-    method: "DELETE",
-    headers: {
-      "Authorization": `Bearer ${localStorage.getItem("token")}`,
-    },
-  });
+    const response = await fetch(`${urlBase}/question/${qid}`, {
+        method: "DELETE",
+        headers: {
+            "Authorization": `Bearer ${localStorage.getItem("token")}`,
+        },
+    });
 
-  if (!response.ok) {
-    throw new Error(`Failed to delete question with id ${qid}`);
-  }
+    if (!response.ok) {
+        throw new Error(`Failed to delete question with id ${qid}`);
+    }
 };
 
 
 export const getQuestions = async (examId: string): Promise<Question[]> => {
+    // return new Promise((resolve) => {
+    //     resolve([{
+    //         quesId: 1,
+    //         points: 5,
+    //         questionText: "a?",
+    //         questionType: "MULTIPLE_CHOICE",
+    //         answers: [{
+    //             answerText: "1",
+    //             isCorrect: true,
+    //         },
+    //         {
+    //             answerText: "2",
+    //             isCorrect: false,
+    //         },
+    //         {
+    //             answerText: "1",
+    //             isCorrect: false,
+    //         }]
+    //     },
+    //     {
+    //         quesId: 3,
+    //         points: 5,
+    //         questionText: "a?",
+    //         questionType: "SINGLE_CHOICE",
+    //         answers: [{
+    //             answerText: "1",
+    //             isCorrect: true,
+    //         },
+    //         {
+    //             answerText: "2",
+    //             isCorrect: false,
+    //         },
+    //         {
+    //             answerText: "1",
+    //             isCorrect: false,
+    //         }]
+    //     },
+    //     {
+    //         quesId: 4,
+    //         points: 5,
+    //         questionText: "a?",
+    //         questionType: "TEXT",
+    //         answerText: "odpowiedź",
+    //     }]);
+    // });
+
     const response = await fetch(`${urlBase}/question?examId=${examId}`, {
         method: "GET",
         headers: {

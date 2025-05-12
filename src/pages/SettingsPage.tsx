@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 export default () => {
     const [settings, setSettings] = useState<Settings>({
         questionsOrder: undefined,
-        timeLimit: 10,
+        timeLimit: 600,
     });
     const navigate = useNavigate();
 
@@ -29,7 +29,7 @@ export default () => {
             <SidebarNav />
             <div className="page-container">
                 <h1 className="page-title">Налаштування</h1>
-                <p className="field-title">Обмеження по часу</p>
+                <p className="field-title">Обмеження по часу в секундах</p>
                 { <input type="number" className="text-input color-dark" placeholder="Обмеження в хвилинах" value={settings.timeLimit}
                     onChange={(e) => {
                         setSettings((prevSettings) => ({

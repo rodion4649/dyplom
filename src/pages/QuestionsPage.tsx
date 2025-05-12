@@ -1,11 +1,10 @@
-/* eslint-disable react-refresh/only-export-components */
 import { useEffect, useState } from "react";
 import Modal from "../components/Modal";
 import EditIcon from "../assets/icons/EditIcon.tsx";
 import DeleteIcon from "../assets/icons/DeleteIcon.tsx";
 import CreateQuestionForm from "../components/CreateQuestionForm.tsx";
-import { Question, QuestionType } from "../types.tsx";
-import { deleteQuestion, getQuestions } from "../services/ExamService.tsx";
+import { Question } from "../types.tsx";
+import { createQuestion, deleteQuestion, getQuestions } from "../services/ExamService.tsx";
 import SidebarNav from "../components/SidebarNav.tsx";
 import { useNavigate } from "react-router-dom";
 
@@ -18,9 +17,9 @@ export default () => {
   const [questionsList, setQuestionsList] = useState<Question[]>([]);
 
   const navigate = useNavigate();
+  const examId = localStorage.getItem("examId");
 
   useEffect(() => {
-    const examId = localStorage.getItem("examId");
     getQuestions(examId ?? "")
       .then((questions: Question[]) => {
         setQuestionsList(questions);
@@ -83,39 +82,35 @@ export default () => {
                       reader.onload = (event) => {
                         const text = event.target?.result as string;
                         try {
-                          const rows = text
-                            .split("\n")
-                            .map((row) => row.split(","));
-                          console.log(rows);
-                          const parsedQuestions = rows.map(
-                            ([quesId, questionType, points, questionText]) => ({
-                              quesId: Number(quesId),
-                              questionType: questionType.trim() as QuestionType,
-                              points: parseInt(points.trim(), 10),
-                              questionText: questionText.trim(),
-                            })
-                          );
-                          console.log(parsedQuestions);
+                          const parsedQuestions = JSON.parse(text);
 
                           const isValid = parsedQuestions.every(
-                            (q) =>
-                              (q.questionType === "TEXT" ||
-                                q.questionType === "MULTIPLE_CHOICE" ||
-                                q.questionType === "SINGLE_CHOICE") &&
-                              !isNaN(q.points) &&
-                              q.questionText
+                            (q: unknown) => {
+                              if (!(typeof q === "object") || q === null)
+                                return false;
+                              const keys = Object.keys(q);
+                              return (
+                                ["questionType", "points", "questionText"].every((key) => keys.includes(key)) &&
+                                ["answerText", "answers"].some((key) => keys.includes(key)) &&
+                                ((q as Question).questionType === "TEXT" ||
+                                  (q as Question).questionType === "MULTIPLE_CHOICE" ||
+                                  (q as Question).questionType === "SINGLE_CHOICE") &&
+                                !isNaN((q as Question).points)
+                              )
+                            }
                           );
 
                           if (isValid) {
+                            Promise.all(parsedQuestions.map((q: Question) => createQuestion(examId ?? "", q)))
                             setQuestionsList(parsedQuestions);
                             setIsImportModalShown(false);
                             setIsImportModalShown(false);
                             setImportedFile(null);
                           } else {
-                            alert("Невірний формат CSV файлу.");
+                            alert("Невірний формат файлу.");
                           }
                         } catch (error) {
-                          console.error("Error parsing CSV file:", error);
+                          console.error("Помилка обробки:", error);
                           alert("Помилка при обробці файлу.");
                         }
                       };
@@ -142,14 +137,12 @@ export default () => {
               className="button"
               onClick={() => {
                 const element = document.createElement("a");
-                const csvContent = questionsList
-                  .map((q) => `${q.questionType},${q.points},${q.questionText}`)
-                  .join("\n");
-                const file = new Blob([csvContent], { type: "text/csv" });
+                const file = new Blob([JSON.stringify(questionsList)], { type: "text/json" });
                 element.href = URL.createObjectURL(file);
                 element.download = "Питання";
                 document.body.appendChild(element);
                 element.click();
+                document.body.removeChild(element);
               }}
             >
               Експортувати питання
@@ -224,7 +217,7 @@ export default () => {
             Створити питання
           </button>
         </div>
-      </div>
+      </div >
     </>
   );
 };

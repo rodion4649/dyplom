@@ -41,7 +41,7 @@ export interface TestSession {
     examId: number,
     startTime: number,
     timeLimit?: number,
-    isCompleted: boolean,
+    completed: boolean,
     // це тільки ті питання, що залишилися
     questions: Question[],
     totalQuestionsNumber: number,

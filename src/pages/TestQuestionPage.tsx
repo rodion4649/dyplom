@@ -26,7 +26,7 @@ export default () => {
       getSession(sessionToken || "")
         .then((data) => {
           if (
-            data.isCompleted ||
+            data.completed ||
             (data.timeLimit &&
               data.startTime + data.timeLimit * 1000 < Date.now())
           ) {
