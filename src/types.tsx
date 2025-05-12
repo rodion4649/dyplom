@@ -23,10 +23,10 @@ export interface Question {
 }
 
 export interface Result {
+    examId: number
     user: string,
     points: number,
     maxPoints: number,
-    isCompleted: boolean,
     timeTaken: number,
 }
 
@@ -38,7 +38,7 @@ export interface Settings {
 export interface TestSession {
     id: string,
     userName: string,
-    examId: string,
+    examId: number,
     startTime: number,
     timeLimit?: number,
     isCompleted: boolean,

@@ -1,135 +1,126 @@
 import { urlBase } from "../consts";
 import { Result, TestSession } from "../types";
 
-export const startSession = async (userName: string, examId: string): Promise<{ sessionToken: string }> => {
-    return new Promise((resolve) => {
-        resolve({ sessionToken: "token" });
-    })
-
-    const response = await fetch(`${urlBase}/startSession`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            userName,
-            examId
-        })
-    })
-
-    if (!response.ok) {
-        throw new Error("Помилка початку сесії");
+// ✅ Start a new session
+export const startSession = async (
+  userName: string,
+  examId: number
+): Promise<{ sessionToken: string }> => {
+  const response = await fetch(
+    `${urlBase}/test/session/start?userName=${encodeURIComponent(
+      userName
+    )}&examId=${examId}`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
     }
+  );
 
-    const json = await response.json();
-    return json;
-}
+  if (!response.ok) {
+    throw new Error("Помилка початку сесії");
+  }
 
-export const getSession = async (): Promise<TestSession> => {
-    return new Promise((resolve) => {
-        resolve({
-            id: "",
-            userName: "zalupa",
-            examId: "",
-            startTime: 0,
-            isCompleted: false,
-            questions: [
+  const json: TestSession = await response.json();
+  return { sessionToken: json.id }; // ✅ wrap session ID as token
+};
 
-                {
-                    questionType: "TEXT",
-                    points: 15,
-                    questionText: "1?",
-                    answerText: "1",
-                },
-                {
-                    questionType: "MULTIPLE_CHOICE",
-                    points: 15,
-                    questionText: "2?",
-                    answers: [
-                        { isCorrect: true, answerText: "1" },
-                        { isCorrect: false, answerText: "a2" },
-                        { isCorrect: false, answerText: "3" },
-                        { isCorrect: false, answerText: "4" }
-                    ]
-                },
-                {
-                    questionType: "SINGLE_CHOICE",
-                    points: 15,
-                    questionText: "3?",
-                    answers: [
-                        { isCorrect: true, answerText: "1" },
-                        { isCorrect: false, answerText: "2" },
-                        { isCorrect: false, answerText: "3b" },
-                        { isCorrect: false, answerText: "4" }
-                    ]
-                }
-            ],
-            totalQuestionsNumber: 3
-        });
-    })
+// ✅ Get an active session by token
+export const getSession = async (
+  sessionToken: string
+): Promise<TestSession> => {
+  const response = await fetch(`${urlBase}/test/session/${sessionToken}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 
-    const response = await fetch(`${urlBase}/getSession`, {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${localStorage.getItem("currentSessionToken")}`
-        }
-    })
+  console.log(response);
+  if (!response.ok) {
+    throw new Error("Помилка отримання сесії");
+  }
 
-    if (!response.ok) {
-        throw new Error("Помилка отримання сесії");
+  return await response.json();
+};
+
+export const sendAnswer = async (
+  questionId: number,
+  givenAnswers: string[] | number[]
+): Promise<boolean> => {
+  const sessionToken = localStorage.getItem("currentSessionToken");
+
+  const response = await fetch(
+    `${urlBase}/test/session/${sessionToken}/answer`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        questionId,
+        givenAnswers,
+      }),
     }
-
-    const json = await response.json();
-    return json;
-}
-
-export const sendAnswer = async (answer: string | number | number[]): Promise<boolean> => {
-    return new Promise((resolve) => {
-        resolve(true);
+  );
+  console.log(
+    JSON.stringify({
+      questionId,
+      givenAnswers,
     })
-    const response = await fetch(`${urlBase}/sendAnswer`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${localStorage.getItem("currentSessionToken")}`
-        }, body: JSON.stringify({
+  );
+  if (!response.ok) {
+    throw new Error("Помилка надсилання відповіді");
+  }
 
-        })
-    })
+  const json = await response.json();
+  return json;
+};
 
-    if (!response.ok) {
-        throw new Error("Помилка надсилання відповіді");
+export const getTestResults = async (sessionToken: string): Promise<Result> => {
+  const response = await fetch(
+    `${urlBase}/test/session/${sessionToken}/getTestResults`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
     }
+  );
 
-    const json = await response.json();
-    return json;
-}
+  if (!response.ok) {
+    throw new Error("Помилка отримання показників");
+  }
 
-export const getTestResults = async (): Promise<Result> => {
-    return new Promise((resolve) => {
-        resolve({
-            isCompleted: true,
-            maxPoints: 100,
-            points: 50,
-            timeTaken: 50,
-            user: "asdf"
-        });
-    })
+  const json = await response.json();
+  return json;
+};
 
-    const response = await fetch(`${urlBase}/getTestResults`, {
-        method: "Get",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${localStorage.getItem("currentSessionToken")}`
-        }
-    })
+export const saveTestResult = async (result: Result): Promise<void> => {
+  const response = await fetch(`${urlBase}/quiz/results`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(result),
+  });
 
-    if (!response.ok) {
-        throw new Error("Помилка отримання показників");
-    }
+  if (!response.ok) {
+    throw new Error("Помилка збереження результату");
+  }
+};
 
-    const json = await response.json();
-    return json;
-}
+// TestService.ts
+export const deleteTestSession = async (sessionToken: string): Promise<void> => {
+  const response = await fetch(`${urlBase}/test/session/${sessionToken}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 
+  if (!response.ok) {
+    throw new Error("Помилка видалення сесії");
+  }
+};

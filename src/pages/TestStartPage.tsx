@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { getExamData } from "../services/ExamService";
 import { startSession } from "../services/TestService";
 import { useState, useEffect } from "react";
@@ -11,7 +12,8 @@ export default () => {
 
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
-    const examId = queryParams.get("examId");
+    const examId = queryParams.get("examId")
+    
 
     useEffect(() => {
         const currentSessionToken = localStorage.getItem("currentSessionToken");
@@ -37,7 +39,7 @@ export default () => {
                     onChange={(e) => { setUserName(e.target.value) }} />
                 <button className="button full-width" onClick={() => {
                     if (userName.length) {
-                        startSession(userName, examId ?? "").then((data) => {
+                        startSession(userName, Number(examId)).then((data) => {
                             localStorage.setItem("currentSessionToken", data.sessionToken);
                             navigate("/test/question");
                         }).catch((error) => {

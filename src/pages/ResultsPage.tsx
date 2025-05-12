@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import SidebarNav from "../components/SidebarNav"
@@ -38,9 +39,7 @@ export default () => {
                         <div className="table-cell w-[170px]">
                             Кількість балів
                         </div>
-                        <div className="table-cell w-[200px]">
-                            Дійшов до кінця?
-                        </div>
+
                         <div className="table-cell">
                             Час виконаня
                         </div>
@@ -58,9 +57,7 @@ export default () => {
                                     <div className="table-cell w-[170px]">
                                         {result.points} з {result.maxPoints}
                                     </div>
-                                    <div className="table-cell w-[200px]">
-                                        {result.isCompleted ? "Так" : "Ні"}
-                                    </div>
+                                    
                                     <div className="table-cell">
                                         {(Math.floor(result.timeTaken / 60))} хв. {result.timeTaken % 60} сек.
                                     </div>
@@ -72,7 +69,7 @@ export default () => {
                 <button className="button" onClick={() => {
                     const element = document.createElement("a");
                     const csvContent = results.map(r =>
-                        `${r.user} отримав ${r.points} з ${r.maxPoints} і ${r.isCompleted ? "" : "не "}дійшов до кінця за ${Math.floor(r.timeTaken / 60)} хв. ${r.timeTaken % 60} сек.`
+                        `${r.user} отримав ${r.points} з ${r.maxPoints} за ${Math.floor(r.timeTaken / 60)} хв. ${r.timeTaken % 60} сек.`
                     ).join("\n");
                     const file = new Blob([csvContent], { type: 'text/plain' });
                     element.href = URL.createObjectURL(file);
