@@ -32,7 +32,7 @@ export interface Result {
 
 export interface Settings {
     questionsOrder?: "inOrder" | "random",
-    timeLimit?: number,
+    timeLimit: number,
 }
 
 export interface TestSession {
@@ -40,7 +40,7 @@ export interface TestSession {
     userName: string,
     examId: number,
     startTime: Date,
-    timeLimit?: number,
+    timeLimit: number,
     completed: boolean,
     // це тільки ті питання, що залишилися
     questions: Question[],

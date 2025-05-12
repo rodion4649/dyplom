@@ -33,7 +33,7 @@ export default () => {
                     ...result,
                     examId: examId,
                     user: user,
-                    timeTaken: result.timeTaken, 
+                    timeTaken: Date.now() - session.startTime.getTime(), 
                 };
 
                 if (!hasSaved.current) {
