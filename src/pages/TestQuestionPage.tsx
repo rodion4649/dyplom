@@ -33,6 +33,9 @@ export default () => {
             )) {
             navigate("/test/result");
           } else {
+            setQuestions(data.questions);
+            setQuestionsNumber(data.totalQuestionsNumber);
+
             if (data.timeLimit) {
               const interval = setInterval(() => {
                 const currentTime = Date.now();
@@ -43,9 +46,6 @@ export default () => {
               }, 1000);
               return () => clearInterval(interval);
             }
-
-            setQuestions(data.questions);
-            setQuestionsNumber(data.totalQuestionsNumber);
           }
         })
         .catch((error) => {

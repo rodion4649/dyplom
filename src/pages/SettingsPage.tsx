@@ -9,6 +9,8 @@ export default () => {
         questionsOrder: undefined,
         timeLimit: 600,
         questionsPerSession: 10,
+        startTime: new Date(),
+        endTime: new Date(),
     });
 
     const navigate = useNavigate();
@@ -32,7 +34,7 @@ export default () => {
             <div className="page-container">
                 <h1 className="page-title">Налаштування</h1>
                 <p className="field-title">Обмеження по часу в секундах</p>
-                { <input type="number" className="text-input color-dark" placeholder="Обмеження в секундах" value={settings.timeLimit}
+                {<input type="number" className="text-input color-dark" placeholder="Обмеження в секундах" value={settings.timeLimit}
                     onChange={(e) => {
                         setSettings((prevSettings) => ({
                             ...prevSettings,
@@ -40,8 +42,35 @@ export default () => {
                         }))
                     }}
                 />}
+
+                <p className="field-title">Час початку</p>
+                {<input type="datetime-local" className="text-input color-dark" value={settings.startTime ?
+                    new Date(settings.startTime.getTime() - settings.startTime.getTimezoneOffset() * 60000).toISOString().slice(0, 16) :
+                    ""}
+                    onChange={(e) => {
+                        console.log(e.target.value)
+                        setSettings((prevSettings) => ({
+                            ...prevSettings,
+                            startTime: e.target.value ? new Date(e.target.value) : undefined
+                        }))
+                    }}
+                />}
+
+                <p className="field-title">Час завершення</p>
+                {<input type="datetime-local" className="text-input color-dark" value={settings.endTime ?
+                    new Date(settings.endTime.getTime() - settings.endTime.getTimezoneOffset() * 60000).toISOString().slice(0, 16) :
+                    ""}
+                    onChange={(e) => {
+                        console.log(e.target.value)
+                        setSettings((prevSettings) => ({
+                            ...prevSettings,
+                            endTime: e.target.value ? new Date(new Date(e.target.value).getTime()) : undefined
+                        }))
+                    }}
+                />}
+
                 <p className="field-title">Кількість питань кожному студенту</p>
-                { <input type="number" className="text-input color-dark" placeholder="Кількість питань" value={settings.questionsPerSession}
+                {<input type="number" className="text-input color-dark" placeholder="Кількість питань" value={settings.questionsPerSession}
                     onChange={(e) => {
                         setSettings((prevSettings) => ({
                             ...prevSettings,
@@ -49,6 +78,7 @@ export default () => {
                         }))
                     }}
                 />}
+
                 <p className="field-title">Порядок питань</p>
                 <div>
                     <label>
@@ -76,6 +106,7 @@ export default () => {
                         </div>
                     </label>
                 </div>
+
                 <button className="button" type="submit" onClick={() => {
                     updateSettings(examId ?? "", settings);
                 }}>

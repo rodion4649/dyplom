@@ -35,13 +35,15 @@ export interface Settings {
     questionsOrder?: "inOrder" | "random",
     timeLimit: number,
     questionsPerSession: number,
+    startTime?: Date,
+    endTime?: Date,
 }
 
 export interface TestSession {
     id: string,
     userName: string,
     examId: number,
-    startTime: string,
+    startTime: Date,
     timeLimit: number,
     completed: boolean,
     // це тільки ті питання, що залишилися

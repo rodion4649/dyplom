@@ -32,7 +32,13 @@ export const getSession = async (
 ): Promise<TestSession> => {
   return new Promise((resolve) => {
     resolve({
-      startTime: new Date(1747066007883 - 5 * 60 * 1000), timeLimit: 600, completed: false, examId: 1, id: "123", totalQuestionsNumber: 1, userName: "1234",
+      startTime: new Date(),
+      timeLimit: 600,
+      completed: false,
+      examId: 1,
+      id: "123",
+      totalQuestionsNumber: 1,
+      userName: "1234",
       questions: [{
         points: 1,
         quesId: 1,
