@@ -21,19 +21,21 @@ export default ({
   return (
     <>
       <p>Кілька відповідей</p>
-      {answers.map((answer, index) => (
-        <button
-          key={index}
-          className={`answer full-width ${selectedAnswers.includes(index) ? "answer-selected" : ""}`}
-          onClick={() => toggleAnswer(index)}
-        >
-          <div className="answer-first-row">
-            <p>
-              {index + 1}. {answer.answerText}
-            </p>
-          </div>
-        </button>
-      ))}
+      {answers
+        .sort(() => Math.random() - 0.5)
+        .map((answer, index) => (
+          <button
+            key={index}
+            className={`answer full-width ${selectedAnswers.includes(index) ? "answer-selected" : ""}`}
+            onClick={() => toggleAnswer(index)}
+          >
+            <div className="answer-first-row">
+              <p>
+                {index + 1}. {answer.answerText}
+              </p>
+            </div>
+          </button>
+        ))}
       <button
         className="button full-width"
         onClick={() => {
