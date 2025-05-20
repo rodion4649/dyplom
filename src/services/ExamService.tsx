@@ -56,6 +56,7 @@ export const getExamData = async (examId: string): Promise<Exam> => {
 export const createQuestion = async (
     examId: string,
     {
+        imageFile,
         questionType,
         points,
         questionText,
@@ -63,6 +64,15 @@ export const createQuestion = async (
         answers,
     }: Question
 ) => {
+    console.log(JSON.stringify({
+        examId,
+        imageFile,
+        questionType,
+        points,
+        questionText,
+        answerText,
+        answers,
+    }),)
     const response = await fetch(`${urlBase}/question/${examId}`, {
         method: "POST",
         headers: {
@@ -71,6 +81,7 @@ export const createQuestion = async (
         },
         body: JSON.stringify({
             examId,
+            imageFile,
             questionType,
             points,
             questionText,

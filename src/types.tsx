@@ -14,7 +14,8 @@ export interface SelectableAnswer {
 }
 
 export interface Question {
-    quesId:number
+    quesId: number,
+    imageFile?: File,
     questionType: QuestionType,
     points: number,
     questionText: string,
@@ -33,13 +34,14 @@ export interface Result {
 export interface Settings {
     questionsOrder?: "inOrder" | "random",
     timeLimit: number,
+    questionsPerSession: number,
 }
 
 export interface TestSession {
     id: string,
     userName: string,
     examId: number,
-    startTime: Date,
+    startTime: string,
     timeLimit: number,
     completed: boolean,
     // це тільки ті питання, що залишилися

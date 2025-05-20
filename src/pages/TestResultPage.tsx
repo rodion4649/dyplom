@@ -33,12 +33,12 @@ export default () => {
                     ...result,
                     examId: examId,
                     user: user,
-                    timeTaken: Date.now() - session.startTime.getTime(), 
+                    timeTaken: (Math.round(Date.now() - new Date(session.startTime).getTime()) / 1000),
                 };
 
                 if (!hasSaved.current) {
-                    await saveTestResult(updatedResult); 
-                    hasSaved.current = true; 
+                    await saveTestResult(updatedResult);
+                    hasSaved.current = true;
                 }
             } catch (error) {
                 console.error("Помилка отримання або збереження результату:", error);

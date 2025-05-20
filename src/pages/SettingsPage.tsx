@@ -8,7 +8,9 @@ export default () => {
     const [settings, setSettings] = useState<Settings>({
         questionsOrder: undefined,
         timeLimit: 600,
+        questionsPerSession: 10,
     });
+
     const navigate = useNavigate();
 
     const examId = localStorage.getItem("examId");
@@ -30,11 +32,20 @@ export default () => {
             <div className="page-container">
                 <h1 className="page-title">Налаштування</h1>
                 <p className="field-title">Обмеження по часу в секундах</p>
-                { <input type="number" className="text-input color-dark" placeholder="Обмеження в хвилинах" value={settings.timeLimit}
+                { <input type="number" className="text-input color-dark" placeholder="Обмеження в секундах" value={settings.timeLimit}
                     onChange={(e) => {
                         setSettings((prevSettings) => ({
                             ...prevSettings,
                             timeLimit: Number(e.target.value)
+                        }))
+                    }}
+                />}
+                <p className="field-title">Кількість питань кожному студенту</p>
+                { <input type="number" className="text-input color-dark" placeholder="Кількість питань" value={settings.questionsPerSession}
+                    onChange={(e) => {
+                        setSettings((prevSettings) => ({
+                            ...prevSettings,
+                            questionsPerSession: Number(e.target.value)
                         }))
                     }}
                 />}

@@ -10,6 +10,9 @@ export default ({ startingValues, onSubmit }: {
     const [questionText, setQuestionText] = useState(startingValues?.startingQuestionText ?? "");
     const [answerText, setAnswerText] = useState(startingValues?.startingAnswerText ?? "");
 
+    const [imageFile, setImageFile] = useState<File>()
+    const [imagePreview, setImagePreview] = useState<string>()
+
     const [errors, setErrors] = useState<{
         pointsError?: string;
         questionError?: string;
@@ -41,11 +44,14 @@ export default ({ startingValues, onSubmit }: {
         const examId = localStorage.getItem("examId");
         const newQuestion: Question = {
             quesId: 1,
+            imageFile,
             questionType: "TEXT",
             points: Number(pointsString),
             questionText,
             answerText,
         };
+
+        console.log(imageFile);
 
         if (!startingValues?.quesId) {
             const { quesId } = await createQuestion(examId ?? "", newQuestion);
@@ -59,7 +65,7 @@ export default ({ startingValues, onSubmit }: {
     return (
         <>
             <div className="answer-second-row">
-                <p>Кількість очок</p>
+                <p>Кількість балів</p>
                 <input
                     className="text-input color-dark"
                     value={pointsString}
@@ -69,6 +75,50 @@ export default ({ startingValues, onSubmit }: {
             </div>
 
             <p className="field-title">Питання</p>
+            <p className="field-title">Додати зображення</p>
+            <input
+                type="file"
+                accept="image/*"
+                className="file-input"
+                onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = () => {
+                            if (reader.result) {
+                                setImagePreview(reader.result.toString());
+                                // setImageFile(file);
+                                // Optionally, you can upload the file to the server here using Blob
+                                const blob = new Blob([file], { type: file.type });
+                                console.log(blob);
+                                const f = new File([blob], "asdf");
+                                console.log(f);
+                                setImageFile(f);
+                                // const formData = new FormData();
+                                // formData.append("file", blob, file.name);
+
+                                // fetch("/upload", {
+                                //     method: "POST",
+                                //     body: formData,
+                                // })
+                                //     .then((response) => response.json())
+                                //     .then((data) => {
+                                //         console.log("File uploaded successfully:", data);
+                                //     })
+                                //     .catch((error) => {
+                                //         console.error("Error uploading file:", error);
+                                //     });
+                            }
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                }}
+            />
+            {imagePreview && (
+                <div className="image-preview">
+                    <img src={imagePreview} alt="Preview" className="preview-image" />
+                </div>
+            )}
             <textarea
                 className="text-area create-question-text-area"
                 value={questionText}

@@ -74,7 +74,7 @@ export default ({ startingValues, onSubmit }:
     return (
         <>
             <div className="answer-second-row">
-                <p>Кількість очок</p>
+                <p>Кількість балів</p>
                 <input
                     className="text-input color-dark"
                     value={pointsString}
