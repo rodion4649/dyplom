@@ -81,7 +81,7 @@ export const createQuestion = async (
         },
         body: JSON.stringify({
             examId,
-            imageFile,
+            imageFile: imageFile ? new Blob([imageFile], { type: imageFile.type }) : undefined,
             questionType,
             points,
             questionText,

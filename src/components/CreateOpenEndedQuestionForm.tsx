@@ -87,27 +87,7 @@ export default ({ startingValues, onSubmit }: {
                         reader.onload = () => {
                             if (reader.result) {
                                 setImagePreview(reader.result.toString());
-                                // setImageFile(file);
-                                // Optionally, you can upload the file to the server here using Blob
-                                const blob = new Blob([file], { type: file.type });
-                                console.log(blob);
-                                const f = new File([blob], "asdf");
-                                console.log(f);
-                                setImageFile(f);
-                                // const formData = new FormData();
-                                // formData.append("file", blob, file.name);
-
-                                // fetch("/upload", {
-                                //     method: "POST",
-                                //     body: formData,
-                                // })
-                                //     .then((response) => response.json())
-                                //     .then((data) => {
-                                //         console.log("File uploaded successfully:", data);
-                                //     })
-                                //     .catch((error) => {
-                                //         console.error("Error uploading file:", error);
-                                //     });
+                                setImageFile(file);
                             }
                         };
                         reader.readAsDataURL(file);
