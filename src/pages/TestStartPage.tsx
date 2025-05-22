@@ -33,7 +33,7 @@ export default () => {
             })
         }
     }, []);
-
+    console.log(examData)
     return (
         <div className="test-start-page center-container">
             <div className="test-container">
@@ -43,6 +43,7 @@ export default () => {
                 </p>
                 {((examData.startTime && Date.now() < examData.startTime.getTime()) ||
                     (examData.endTime && Date.now() > examData.endTime.getTime())
+                    
                 ) ?
                     <>
                         Цей екзамен доступний {examData.startTime ? `з ${examData.startTime.toLocaleDateString()} ${examData.startTime.toLocaleTimeString()} ` : ""} {examData.endTime ? `до ${examData.endTime.toLocaleDateString()} ${examData.endTime.toLocaleTimeString()} ` : ""}

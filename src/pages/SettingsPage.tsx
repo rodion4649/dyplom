@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { useState, useEffect } from "react";
 import SidebarNav from "../components/SidebarNav"
 import { getSettings, updateSettings } from "../services/ExamService";

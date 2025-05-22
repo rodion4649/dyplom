@@ -30,24 +30,7 @@ export const startSession = async (
 export const getSession = async (
   sessionToken: string
 ): Promise<TestSession> => {
-  return new Promise((resolve) => {
-    resolve({
-      startTime: new Date(),
-      timeLimit: 600,
-      completed: false,
-      examId: 1,
-      id: "123",
-      totalQuestionsNumber: 1,
-      userName: "1234",
-      questions: [{
-        points: 1,
-        quesId: 1,
-        questionText: "1?",
-        questionType: "TEXT",
-        answerText: "123"
-      }]
-    });
-  })
+ 
   const response = await fetch(`${urlBase}/test/session/${sessionToken}`, {
     method: "GET",
     headers: {

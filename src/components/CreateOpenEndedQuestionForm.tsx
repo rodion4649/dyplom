@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { useState } from "react";
 import { createQuestion, updateQuestion } from "../services/ExamService";
 import { Question } from "../types";
