@@ -69,7 +69,7 @@ export default () => {
                 <button className="button" onClick={() => {
                     const element = document.createElement("a");
                     const csvContent = results.map(r =>
-                        `${r.user} отримав ${r.points} з ${r.maxPoints} за ${Math.floor(r.timeTaken / 60)} хв. ${r.timeTaken % 60} сек.`
+                        `${r.user} отримав ${r.points} з ${r.maxPoints} за ${Math.floor(r.timeTaken / 60)} хв. ${Math.floor(r.timeTaken % 60)} сек.`
                     ).join("\n");
                     const file = new Blob([csvContent], { type: 'text/plain' });
                     element.href = URL.createObjectURL(file);
