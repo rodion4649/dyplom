@@ -5,7 +5,7 @@ import { Question, QuestionType, SelectableAnswer } from "../types.tsx";
 import CreateSingleChoiseQuestionForm from "./CreateSingleChoiseQuestionForm.tsx";
 
 export default ({ startingValues, onSubmit }: {
-    startingValues?: { quesId: number, imageFile: string, questionType: QuestionType, startingPoints?: number, startingQuestionText: string, startingAnswerText?: string, startingAnswers?: SelectableAnswer[] },
+    startingValues?: { quesId: number, imageFile?: File | string, questionType: QuestionType, startingPoints?: number, startingQuestionText: string, startingAnswerText?: string, startingAnswers?: SelectableAnswer[] },
     onSubmit: (newQuestion: Question) => void
 }) => {
     const [questionType, setQuestionType] = useState<QuestionType>(startingValues?.questionType ?? "MULTIPLE_CHOICE");

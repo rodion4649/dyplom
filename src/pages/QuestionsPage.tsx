@@ -49,6 +49,7 @@ export default () => {
               <CreateQuestionForm
                 startingValues={editingQuestionIndex === -1 ? undefined : {
                   quesId: questionsList[editingQuestionIndex].quesId,
+                  imageFile: questionsList[editingQuestionIndex].imageFile,
                   questionType: questionsList[editingQuestionIndex].questionType,
                   startingAnswers: questionsList[editingQuestionIndex].answers,
                   startingAnswerText: questionsList[editingQuestionIndex].answerText,

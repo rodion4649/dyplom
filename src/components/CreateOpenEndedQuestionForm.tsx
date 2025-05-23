@@ -3,15 +3,19 @@ import { createQuestion, updateQuestion } from "../services/ExamService";
 import { Question } from "../types";
 
 export default ({ startingValues, onSubmit }: {
-    startingValues?: { quesId: number, startingPoints?: number, startingQuestionText: string, startingAnswerText?: string },
+    startingValues?: { quesId: number, imageFile?: File | string, startingPoints?: number, startingQuestionText: string, startingAnswerText?: string },
     onSubmit: (newQuestion: Question) => void
 }) => {
     const [pointsString, setPointsString] = useState(startingValues?.startingPoints?.toString() ?? "5");
     const [questionText, setQuestionText] = useState(startingValues?.startingQuestionText ?? "");
     const [answerText, setAnswerText] = useState(startingValues?.startingAnswerText ?? "");
 
-    const [imageFile, setImageFile] = useState<File>()
-    const [imagePreview, setImagePreview] = useState<string>()
+    const [imageFile, setImageFile] = useState<File>();
+    const [imagePreview, setImagePreview] = useState<string>(
+        typeof startingValues?.imageFile === "string" ? `http://localhost:8080/uploads/images/${encodeURIComponent(
+            startingValues?.imageFile
+        )}` : ""
+    );
 
     const [errors, setErrors] = useState<{
         pointsError?: string;
