@@ -5,7 +5,7 @@ import { Question, SelectableAnswer } from "../types.tsx";
 
 export default ({ startingValues, onSubmit }:
     {
-        startingValues?: { quesId: number, startingPoints?: number, startingQuestionText: string, startingAnswers?: SelectableAnswer[] },
+        startingValues?: { quesId: number, imageFile?: File | string, startingPoints?: number, startingQuestionText: string, startingAnswers?: SelectableAnswer[] },
         onSubmit: (newQuestion: Question) => void
     }
 ) => {
@@ -17,8 +17,12 @@ export default ({ startingValues, onSubmit }:
         { isCorrect: false, answerText: "" }
     ]);
 
-    const [imageFile, setImageFile] = useState<File>()
-    const [imagePreview, setImagePreview] = useState<string>()
+    const [imageFile, setImageFile] = useState<File>();
+    const [imagePreview, setImagePreview] = useState<string>(
+        typeof startingValues?.imageFile === "string" ? `http://localhost:8080/uploads/images/${encodeURIComponent(
+            startingValues?.imageFile
+        )}` : ""
+    );
 
     const [errors, setErrors] = useState<{
         pointsError?: string;
