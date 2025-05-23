@@ -15,7 +15,7 @@ export interface SelectableAnswer {
 
 export interface Question {
     quesId: number,
-    imageFile?: File,
+    imageFile?: File | string,
     questionType: QuestionType,
     points: number,
     questionText: string,

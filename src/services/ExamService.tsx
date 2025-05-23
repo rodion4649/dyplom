@@ -64,7 +64,7 @@ export const createQuestion = async (
     questionText,
     answerText,
     answers,
-  }: Question & { imageFile?: File }
+  }: Question
 ) => {
   const formData = new FormData();
   formData.append("examId", examId);

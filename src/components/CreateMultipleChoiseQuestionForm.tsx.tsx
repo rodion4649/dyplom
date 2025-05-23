@@ -17,6 +17,9 @@ export default ({ startingValues, onSubmit }:
         { isCorrect: false, answerText: "" }
     ]);
 
+    const [imageFile, setImageFile] = useState<File>()
+    const [imagePreview, setImagePreview] = useState<string>()
+
     const [errors, setErrors] = useState<{
         pointsError?: string;
         questionError?: string;
@@ -91,6 +94,31 @@ export default ({ startingValues, onSubmit }:
             />
             {errors.questionError && <p className="error-text">{errors.questionError}</p>}
 
+            <p className="field-title">Додати зображення</p>
+            <input
+                type="file"
+                accept="image/*"
+                className="file-input"
+                onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = () => {
+                            if (reader.result) {
+                                setImagePreview(reader.result.toString());
+                                setImageFile(file);
+                            }
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                }}
+            />
+            {imagePreview && (
+                <div className="image-preview">
+                    <img src={imagePreview} alt="Preview" className="preview-image" />
+                </div>
+            )}
+
             <div>
                 {answers.map((answer, index) => (
                     <div className="answer" key={index}>
@@ -145,6 +173,7 @@ export default ({ startingValues, onSubmit }:
                         const newQuestion: Question = {
                             quesId: 0,
                             questionType: "MULTIPLE_CHOICE",
+                            imageFile,
                             points: Number(pointsString),
                             questionText,
                             answers

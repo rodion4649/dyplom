@@ -1,4 +1,3 @@
-/* eslint-disable react-refresh/only-export-components */
 import { useState } from "react";
 import { createQuestion, updateQuestion } from "../services/ExamService";
 import { Question } from "../types";
@@ -75,7 +74,16 @@ export default ({ startingValues, onSubmit }: {
                 {errors.pointsError && <p className="error-text">{errors.pointsError}</p>}
             </div>
 
+
+
             <p className="field-title">Питання</p>
+            <textarea
+                className="text-area create-question-text-area"
+                value={questionText}
+                onChange={(e) => setQuestionText(e.target.value)}
+            />
+            {errors.questionError && <p className="error-text">{errors.questionError}</p>}
+
             <p className="field-title">Додати зображення</p>
             <input
                 type="file"
@@ -100,12 +108,6 @@ export default ({ startingValues, onSubmit }: {
                     <img src={imagePreview} alt="Preview" className="preview-image" />
                 </div>
             )}
-            <textarea
-                className="text-area create-question-text-area"
-                value={questionText}
-                onChange={(e) => setQuestionText(e.target.value)}
-            />
-            {errors.questionError && <p className="error-text">{errors.questionError}</p>}
 
             <p className="field-title">Відповідь</p>
             <textarea

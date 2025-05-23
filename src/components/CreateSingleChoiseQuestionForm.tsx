@@ -17,6 +17,9 @@ export default ({ startingValues, onSubmit }:
         { isCorrect: false, answerText: "" },
     ]);
 
+    const [imageFile, setImageFile] = useState<File>()
+    const [imagePreview, setImagePreview] = useState<string>()
+  
     const [errors, setErrors] = useState<{
         pointsError?: string;
         questionError?: string;
@@ -75,6 +78,31 @@ export default ({ startingValues, onSubmit }:
                 className="text-area create-question-text-area"
             />
             <p className="error-text">{errors.questionError}</p>
+
+            <p className="field-title">Додати зображення</p>
+            <input
+                type="file"
+                accept="image/*"
+                className="file-input"
+                onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = () => {
+                            if (reader.result) {
+                                setImagePreview(reader.result.toString());
+                                setImageFile(file);
+                            }
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                }}
+            />
+            {imagePreview && (
+                <div className="image-preview">
+                    <img src={imagePreview} alt="Preview" className="preview-image" />
+                </div>
+            )}
 
             <div>
                 {answers.map((answer, index) => (
@@ -143,6 +171,7 @@ export default ({ startingValues, onSubmit }:
                         const examId = localStorage.getItem("examId");
                         const newQuestion: Question = {
                             quesId: 0,
+                            imageFile,
                             questionType: "SINGLE_CHOICE",
                             points: Number(pointsString),
                             questionText,
