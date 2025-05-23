@@ -59,7 +59,7 @@ export default () => {
                                     </div>
                                     
                                     <div className="table-cell">
-                                        {(Math.floor(result.timeTaken / 60))} хв. {result.timeTaken % 60} сек.
+                                        {(Math.floor(result.timeTaken / 60))} хв. {Math.floor(result.timeTaken % 60)} сек.
                                     </div>
                                 </div>
                             </div>
