@@ -61,8 +61,8 @@ export default ({ startingValues, onSubmit }: {
             const { quesId } = await createQuestion(examId ?? "", newQuestion);
             onSubmit({ ...newQuestion, quesId });
         } else {
-            const { quesId } = await updateQuestion(startingValues?.quesId, newQuestion);
-            onSubmit({ ...newQuestion, quesId });
+            const { quesId, imageFile } = await updateQuestion(startingValues?.quesId, newQuestion);
+            onSubmit({ ...newQuestion, quesId, imageFile });
         };
     };
 
