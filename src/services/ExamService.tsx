@@ -103,21 +103,31 @@ export const createQuestion = async (
 
 export const updateQuestion = async (
   questionId: number,
-  { questionType, points, questionText, answerText, answers }: Question
+  { questionType, points, questionText, answerText, answers, imageFile }: Question
 ) => {
+  const formData = new FormData();
+  formData.append("questionId", questionId.toString());
+  if (imageFile) {
+    formData.append("imageFile", imageFile);
+  }
+  formData.append("questionText", questionText);
+  formData.append("questionType", questionType);
+  formData.append("points", points.toString());
+  if (answerText) {
+    formData.append("answerText", answerText);
+  }
+  if (imageFile) {
+    formData.append("imageFile", imageFile); // exact name matches DTO
+  }
+  if (answers) {
+    formData.append("answers", JSON.stringify(answers));
+  }
   const response = await fetch(`${urlBase}/question/${questionId}`, {
     method: "PUT",
     headers: {
-      "Content-Type": "application/json",
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
-    body: JSON.stringify({
-      questionType,
-      points,
-      questionText,
-      answerText,
-      answers,
-    }),
+    body: formData,
   });
 
   if (!response.ok) {

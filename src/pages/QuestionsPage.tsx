@@ -63,7 +63,8 @@ export default () => {
                     });
                   else {
                     setQuestionsList(() => {
-                      return [...questionsList, newQuestion];
+                      return questionsList.slice(0, editingQuestionIndex)
+                        .concat(newQuestion, questionsList.slice(editingQuestionIndex + 1));
                     });
                   }
                   setIsQuestionModalShown(false);
