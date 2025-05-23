@@ -14,7 +14,6 @@ export default ({
     <>
       <p>Тільки одна відповідь</p>
       {answers
-        .sort(() => Math.random() - 0.5)
         .map((answer, index) => (
           <button
             key={index}
